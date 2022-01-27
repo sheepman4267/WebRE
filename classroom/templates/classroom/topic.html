@@ -1,0 +1,22 @@
+<div class="body" id="body">
+    {{ topic.body_markdown|safe }}
+    {% if post %}
+    <div hx-get="/posts/{{ post.pk }}" hx-swap="outerHTML" id="participant-post" class="participant-post">
+        <h4>{{ post.title }}</h4>
+        {{ post.body_markdown_short|safe }}...<br>
+        <button hx-target="#closest participant-post">Show More</button>
+    </div>
+    {% else %} <!--TODO: Don't show this form until the user click on "Share Your Thoughts" or something. Also allow cancelling.-->
+        <!--<div class="participant-post">
+            <form method="post" action="/posts/submit/{{ topic.pk }}">{% csrf_token %}
+                <div>Title: {{ form.title.errors }}{{ form.title }}</div>
+                <div>{{ form.body }}</div>
+                {{ form.body.media }} TODO: Fix MarkdownX Preview
+                <input type="submit"> TODO: Rename this button.
+            </form>
+        </div>-->
+        <div hx-get="/posts/edit/{{ topic.pk }}" hx-swap="outerHTML" id="new-post" class="participant-post">
+            <a><h3>Share Your Thoughts...</h3></a>
+        </div>
+    {% endif %}
+</div>

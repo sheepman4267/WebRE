@@ -1,0 +1,15 @@
+{% extends "classroom/base.html" %}
+
+{% block navpanel %}
+{% endblock %}
+
+{% block main %}
+<div class="body" id="auth-body">
+    <h2>Sign Up</h2>
+    <form method="post" action="/signup">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign up</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "classroom/base.html" %}
+
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <title>IMUU Classroom: Index</title>
+</head>
+{% endblock %}
+
+{% block main %}
+    <style>
+    .main-body {
+        background-color: #dd1144;
+    }
+    </style>
+    <div hx-boost="true" class="body-base">
+        <div class="body">
+            <div class="index-container">
+                {% for i in index_items %}
+                    {% include "classroom/index-item.html" with item=i %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

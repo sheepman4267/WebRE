@@ -1,0 +1,27 @@
+{% extends "classroom/base.html" %}
+{% block navpanel %}
+{% endblock %}
+
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% endblock %}
+
+{% block main %}
+    <div class="body">
+        <h1>Welcome to the WebRE Online Classroom!</h1>
+        <button hx-get="/accounts/login" hx-trigger="click" hx-target="#auth-body" hx-select="#auth-body" hx-swap="outerHTML">Log In</button>
+        <button hx-get="/signup" hx-trigger="click" hx-target="#auth-body" hx-swap="outerHTML">Sign Up</button>
+    </div>
+    <div class="body" id="auth-body">
+        <h2>Log In</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Log In</button>
+            <button hx-get="/accounts/"
+        </form>
+    </div>
+{% endblock %}

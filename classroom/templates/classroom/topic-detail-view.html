@@ -1,0 +1,23 @@
+{% extends "classroom/base.html" %}
+
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <title>IMUU Classroom: {{ topic.title }}</title>
+</head>
+{% endblock %}
+
+{% block main %}
+    <style>
+    .main-body {
+        background-color: {{ topic.accent_color }};
+    }
+    </style>
+    <div class="body-base">
+        <div class="body">
+            {% for post in posts %}
+                {% include "classroom/participant-post-short.html" with post=post %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

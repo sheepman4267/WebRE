@@ -1,0 +1,5 @@
+<div hx-get="/posts/{{ post.pk }}" hx-swap="outerHTML" id="participant-post" class="participant-post">
+    <h4>{{ post.title }}</h4>
+    {{ post.body_markdown_short|safe }}...<br>
+    <button hx-target="#closest participant-post">Show More</button>
+</div>

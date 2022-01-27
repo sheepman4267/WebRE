@@ -1,0 +1,8 @@
+<div id="postlarge" class="participant-post">
+    <h4>{{ post.title }}</h4>
+    {{ post.body_markdown|safe }}<br>
+    <button hx-ext='debug' hx-get="/posts/{{ post.pk }}/short" hx-target="#postlarge" hx-swap="outerHTML">Show Less</button>
+    {% if editable %}
+    <button hx-ext="debug" hx-post="/posts/edit/post/{{ post.pk }}" hx-trigger="click" hx-target="#postlarge" hx-swap="outerHTML">Edit</button>
+    {% endif %}
+</div>

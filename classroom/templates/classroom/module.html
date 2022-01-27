@@ -1,0 +1,52 @@
+{% extends "classroom/base.html" %}
+{% load classroom_extras %}
+{% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IMUU Classroom: {{ module.title }}</title>
+</head>
+{% endblock %}
+
+{% block main %}
+    <style>
+    .main-body {
+        background-color: {{ background_color }};
+    }
+    </style>
+
+    <div class="body-base">
+        <div class="body">
+            <div class="module-title">{{ module.title}}</div>
+            {{ body|safe }}
+        </div><br>
+        {% for topic in topics %}
+            {% topic topic=topic request=request %}
+        {% endfor %}
+
+        <div hx-boost="true">
+        {% for button in page_buttons %}
+            {% if button == "next" %}
+                <a href="/modules/{{ module.pk }}/{{ next_page }}">Next Page</a>
+            {% endif %}
+            {% if button == "prev" %}
+                <a href="/modules/{{ module.pk }}/{{ prev_page }}">Previous Page</a>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+<br>
+{% block page_buttons %}
+    <div hx-boost="true">
+        {% for button in page_buttons %}
+            {% if button == "next" %}
+                <a href="/modules/{{ module.pk }}/{{ next_page }}">Next</a>
+            {% endif %}
+            {% if button == "prev" %}
+                <a href="/modules/{{ module.pk }}/{{ prev_page }}">Previous</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

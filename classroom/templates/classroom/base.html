@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+{% load classroom_extras %}
+<link rel="stylesheet" type="text/css" href="{% static 'classroom/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'markdownx/admin/css/markdownx.css' %}">
+<script src="https://unpkg.com/htmx.org@1.6.1"></script><!--integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW" crossorigin="anonymous"></script>-->
+
+<html lang="en">
+    {% block head %}
+        <head>
+            <meta charset="UTF-8">
+            <title>IMUU Classroom</title>
+        </head>
+    {% endblock %}
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="main-body">
+        {% block navpanel %}
+        {% include "classroom/navpanel.html" %}
+        {% endblock %}
+        <div class="base">
+            {% block main %} {% endblock %}
+        </div>
+    </body>
+</html>
