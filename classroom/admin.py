@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from markdownx.admin import MarkdownxModelAdmin
 
-from .models import Module, ParticipantPost, Topic
+from .models import Module, ParticipantPost, Topic, BingoCard, BingoCardItem
 
 class ModuleAdmin(MarkdownxModelAdmin):
     exclude = [
@@ -38,4 +38,6 @@ class ParticipantPostAdmin(MarkdownxModelAdmin):
 admin.site.register(Module, ModuleAdmin)
 admin.site.register(ParticipantPost, ParticipantPostAdmin)
 admin.site.register(Topic, TopicAdmin)
+admin.site.register(BingoCard, MarkdownxModelAdmin)
+admin.site.register(BingoCardItem, MarkdownxModelAdmin)
 # Register your models here.

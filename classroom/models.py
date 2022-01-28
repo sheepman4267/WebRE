@@ -38,6 +38,7 @@ class Topic(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, unique=False)
     page = models.IntegerField()
     body_markdown = models.TextField(null=True)
+    participant_posts_allowed = models.BooleanField("Allow Participant Posts", default=True)
     participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
     participant_posts_can_be_shared = models.BooleanField("Allow Participants to share posts", default=True)
     force_participant_post_sharing = models.BooleanField("Force Participant Posts to be shared with the group", default=False)
@@ -52,6 +53,59 @@ class Topic(models.Model):
 
     def user_posts(self, user):
         return self.posts.filter(topic=self.pk, owner=user)
+
+class BingoCard(models.Model):
+    title = models.CharField(max_length=200)
+    publish_date = models.DateField('date published', default=datetime.date.today, editable=False)
+    updated_date = models.DateField('date updated', default=datetime.date.today, editable=False)
+    body = MarkdownxField()
+    accent_color = ColorField(default='#FFFFFF')
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, unique=False)
+    page = models.IntegerField()
+    body_markdown = models.TextField(null=True)
+    participant_posts_allowed = models.BooleanField("Allow Participant Posts", default=False)
+    participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
+    participant_posts_can_be_shared = models.BooleanField("Allow Participants to share posts", default=True)
+    force_participant_post_sharing = models.BooleanField("Force Participant Posts to be shared with the group", default=False)
+    columns = models.IntegerField()
+    rows = models.IntegerField()
+
+@receiver(post_save, sender=BingoCard)
+def create_items(sender, instance, **kwargs):
+    existing_items = BingoCardItem.objects.filter(card=instance)
+    for row in range(0, instance.rows):
+        for col in range(0, instance.columns):
+            if existing_items.filter(pos_x=col, pos_y=row):
+                print('gothere')
+                continue
+            else:
+                item = BingoCardItem.objects.create(card=instance, body='', pos_x=col, pos_y=row)
+                item.save()
+
+@receiver(post_save, sender=BingoCard)
+def order_items(sender, instance, **kwargs):
+    sequence = 0
+    for row in range(0, instance.rows):
+        for col in range(0, instance.columns):
+            item = instance.items.get(pos_x=col, pos_y=row)
+            item.sequence = sequence
+            sequence += 1
+
+    def save(self, *args, **kwargs):
+        #self.create_items()
+        super(self, BingoCard).save(*args, **kwargs)
+
+class BingoCardItem(models.Model):
+    card = models.ForeignKey(BingoCard, on_delete=models.CASCADE, unique=False, related_name='items')
+    body = MarkdownxField(null=True)
+    pos_x = models.IntegerField()
+    pos_y = models.IntegerField()
+    sequence = models.IntegerField()
+    class Meta:
+        ordering = ['sequence']
+
+    def __str__(self):
+        return f'{self.card.title}: {self.pos_x}x{self.pos_y}'
 
 class ParticipantPost(models.Model):
     title = models.CharField(max_length=200)
