@@ -70,12 +70,18 @@ class BingoCard(models.Model):
     columns = models.IntegerField()
     rows = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.module.title}: {self.title}'
+
 @receiver(post_save, sender=BingoCard)
-def create_items(sender, instance, **kwargs):
-    existing_items = BingoCardItem.objects.filter(card=instance)
+def ensure_items_exist(sender, instance, **kwargs):
+    for item in instance.items.filter():
+        if item.pos_x > instance.columns or item.pos_y > instance.rows:
+            item.visible = False
+            item.save()
     for row in range(0, instance.rows):
         for col in range(0, instance.columns):
-            if existing_items.filter(pos_x=col, pos_y=row):
+            if instance.items.filter(pos_x=col, pos_y=row):
                 print('gothere')
                 continue
             else:
@@ -92,16 +98,13 @@ def order_items(sender, instance, **kwargs):
             item.save()
             sequence += 1
 
-    def save(self, *args, **kwargs):
-        #self.create_items()
-        super(self, BingoCard).save(*args, **kwargs)
-
 class BingoCardItem(models.Model):
     card = models.ForeignKey(BingoCard, on_delete=models.CASCADE, unique=False, related_name='items')
     body = MarkdownxField(null=True)
     pos_x = models.IntegerField()
     pos_y = models.IntegerField()
-    sequence = models.IntegerField()
+    sequence = models.IntegerField(null=True)
+    visible = models.BooleanField(default=True)
     class Meta:
         ordering = ['sequence']
 

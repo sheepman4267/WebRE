@@ -35,9 +35,22 @@ class ParticipantPostAdmin(MarkdownxModelAdmin):
         'body_markdown_short',
     ]
 
+class BingoCardItemAdmin(MarkdownxModelAdmin):
+    list_filter = [
+        'card',
+        'visible',
+    ]
+    exclude = [
+        'pos_x',
+        'pos_y',
+        'sequence',
+        'card',
+        'visible',
+    ]
+
 admin.site.register(Module, ModuleAdmin)
 admin.site.register(ParticipantPost, ParticipantPostAdmin)
 admin.site.register(Topic, TopicAdmin)
-admin.site.register(BingoCard, MarkdownxModelAdmin)
-admin.site.register(BingoCardItem, MarkdownxModelAdmin)
+admin.site.register(BingoCard, TopicAdmin)
+admin.site.register(BingoCardItem, BingoCardItemAdmin)
 # Register your models here.
