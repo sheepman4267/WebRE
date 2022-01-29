@@ -89,6 +89,7 @@ def order_items(sender, instance, **kwargs):
         for col in range(0, instance.columns):
             item = instance.items.get(pos_x=col, pos_y=row)
             item.sequence = sequence
+            item.save()
             sequence += 1
 
     def save(self, *args, **kwargs):
