@@ -54,6 +54,24 @@
     margin-top: 0;
 }
 
+.bingo-container {
+    display: grid;
+    padding: 0mm;
+    grid-gap: 1px;
+    grid-column-gap: 1px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.bingo-card-item {
+    height: 2cm;
+    min-width: 2.75cm;
+    background-color: #ffffff;
+    border: #000000;
+    border-width: 10px;
+    text-align: center;
+}
+
 .index-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(6cm, 1fr));

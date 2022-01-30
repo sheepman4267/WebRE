@@ -61,31 +61,53 @@ class BingoCard(models.Model):
     body = MarkdownxField()
     accent_color = ColorField(default='#FFFFFF')
     module = models.ForeignKey(Module, on_delete=models.CASCADE, unique=False)
-    page = models.IntegerField()
+    page = models.IntegerField(unique=True)
     body_markdown = models.TextField(null=True)
-    participant_posts_allowed = models.BooleanField("Allow Participant Posts", default=False)
-    participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
-    participant_posts_can_be_shared = models.BooleanField("Allow Participants to share posts", default=True)
-    force_participant_post_sharing = models.BooleanField("Force Participant Posts to be shared with the group", default=False)
+    #TODO: Add ParticipantPost capability to BingoCards
+    #participant_posts_allowed = models.BooleanField("Allow Participant Posts", default=False)
+    #participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
+    #participant_posts_can_be_shared = models.BooleanField("Allow Participants to share posts", default=True)
+    #force_participant_post_sharing = models.BooleanField("Force Participant Posts to be shared with the group", default=False)
     columns = models.IntegerField()
     rows = models.IntegerField()
+
+    def _debug_items(self):
+        iteration = 0
+        for item in self.items.filter(visible=True):
+            item.body = iteration
+            item.save()
+            iteration += 1
+            print(item.body)
+
+    def save(self, *args, **kwargs):
+        self.updated_date = datetime.date.today()
+        self.body_markdown = markdownify(self.body)
+        super(BingoCard, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.module.title}: {self.title}'
 
 @receiver(post_save, sender=BingoCard)
 def ensure_items_exist(sender, instance, **kwargs):
+    print(instance.rows)
+    print(instance.columns)
+
     for item in instance.items.filter():
-        if item.pos_x > instance.columns or item.pos_y > instance.rows:
+        if item.pos_x >= instance.columns or item.pos_y >= instance.rows:
             item.visible = False
             item.save()
+        else:
+            item.visible = True
     for row in range(0, instance.rows):
         for col in range(0, instance.columns):
             if instance.items.filter(pos_x=col, pos_y=row):
+                item.visible = True
+                item.save()
                 print('gothere')
                 continue
             else:
                 item = BingoCardItem.objects.create(card=instance, body='', pos_x=col, pos_y=row)
+                item.visible = True
                 item.save()
 
 @receiver(post_save, sender=BingoCard)

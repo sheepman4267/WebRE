@@ -20,3 +20,4 @@ def topic(topic, request):
         'topic': topic,
         'form': form,
     })
+

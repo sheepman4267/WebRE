@@ -1,0 +1,36 @@
+<style>
+    .bingo-container {
+        display: grid;
+        padding: 0mm;
+        grid-gap: 0.8mm;
+        grid-column-gap: 0.8mm;
+        align-items: center;
+        margin: 0 auto;
+        grid-template-columns: repeat({{ card.columns }}, 3cm);
+        width: fit-content;
+    }
+</style>
+
+<div class="body" id="body">
+    {{ card.body_markdown|safe }}
+    <div class="bingo-container">
+        {% for item in card_items %}
+            {% if item.visible %}
+                <div class="bingo-card-item">
+                    {{ item.body }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <!--{% if post %} TODO: Add ParticipantPost capability to BingoCards
+    <div hx-get="/posts/{{ post.pk }}" hx-swap="outerHTML" id="participant-post" class="participant-post">
+        <h4>{{ post.title }}</h4>
+        {{ post.body_markdown_short|safe }}...<br>
+        <button hx-target="#closest participant-post">Show More</button>
+    </div>
+    {% else %}
+        <div hx-get="/posts/edit/{{ topic.pk }}" hx-swap="outerHTML" id="new-post" class="participant-post">
+            <a><h3>Share Your Thoughts...</h3></a>
+        </div>
+    {% endif %}-->
+</div>

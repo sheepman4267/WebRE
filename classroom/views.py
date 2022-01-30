@@ -7,7 +7,7 @@ from django.http import HttpResponseNotFound, Http404
 
 from markdownx.utils import markdownify
 
-from .models import Module, ParticipantPost, Topic
+from .models import Module, ParticipantPost, Topic, BingoCard
 from .forms import ParticipantPostForm, WebREUserCreationForm
 
 @login_required
@@ -45,6 +45,12 @@ def module(request, module, page=0):
             page_buttons = ['prev', 'next']
     else:
         page_buttons = ''
+    #with BingoCard.objects.filter(module=module) as cards:
+    cards = BingoCard.objects.filter(module=module)
+    if cards.exists():
+        bingocard = cards[0]
+    else:
+        bingocard = None
     return render(request, 'classroom/module.html', {
         "module": module,
         "body": body,
@@ -54,6 +60,8 @@ def module(request, module, page=0):
         "next_page": page + 1,
         "prev_page": page - 1,
         "request": request,
+        "bingocard": bingocard,
+        "bingocard_items": bingocard.items.all()
     })
 
 @login_required()

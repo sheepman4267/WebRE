@@ -21,6 +21,9 @@
             <div class="module-title">{{ module.title}}</div>
             {{ body|safe }}
         </div><br>
+        {% if bingocard %}
+            {% include "classroom/bingocard.html" with card=bingocard card_items=bingocard_items%}
+        {% endif %}
         {% for topic in topics %}
             {% topic topic=topic request=request %}
         {% endfor %}
