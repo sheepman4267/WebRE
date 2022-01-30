@@ -131,7 +131,7 @@ class BingoCardItem(models.Model):
         ordering = ['sequence']
 
     def __str__(self):
-        return f'{self.card.title}: {self.pos_x}x{self.pos_y}'
+        return f'{self.card.title}: {self.pos_y}x{self.pos_x}'
 
 class ParticipantPost(models.Model):
     title = models.CharField(max_length=200)
