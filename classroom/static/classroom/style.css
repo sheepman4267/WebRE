@@ -54,6 +54,18 @@
     margin-top: 0;
 }
 
+.left-item {
+    display: inline-block;
+    float: left;
+    margin-left: 5mm;
+}
+.right-item {
+    display: inline-block;
+    float: right;
+    margin-right: 5mm;
+}
+
+
 .bingo-container {
     display: grid;
     padding: 0mm;
