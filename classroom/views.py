@@ -7,14 +7,24 @@ from django.http import HttpResponseNotFound, Http404
 
 from markdownx.utils import markdownify
 
-from .models import Module, ParticipantPost, Topic, BingoCard
+from .models import Module, ParticipantPost, Topic, BingoCard, Program
 from .forms import ParticipantPostForm, WebREUserCreationForm
 
 @login_required
 def index(request):
     return render(request, 'classroom/index.html', {
-        "index_items": Module.objects.all(),
-        "background_color": "#0f0f0f"
+        "index_items": Program.objects.filter(participants=request.user.profile),
+        "background_color": "#0f0f0f",
+        "dest_type": "program"
+    })
+
+@login_required()
+def program(request, program):
+    program = get_object_or_404(Program, pk=program)
+    return render(request, 'classroom/index.html', {
+        "index_items": Module.objects.filter(program=program),
+        "background_color": program.background_color,
+        "dest_type": "modules",
     })
 
 #TODO: Styling Overhaul needs to spend a lot of time here

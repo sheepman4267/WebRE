@@ -11,12 +11,22 @@ from colorfield.fields import ColorField
 
 import datetime
 
+class Program(models.Model):
+    title = models.CharField(max_length=200)
+    body = MarkdownxField()
+    background_color = ColorField(default='#FFFFFF')
+
+    def __str__(self):
+        return self.title
+
 class Module(models.Model):
     title = models.CharField(max_length=200)
     publish_date = models.DateField('date published', default=datetime.date.today, editable=False)
     updated_date = models.DateField('date updated', default=datetime.date.today, editable=False)
     body = MarkdownxField()
     background_color = ColorField(default='#FFFFFF')
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, unique=False)
+    enabled = models.BooleanField(default=False)
 
     def pages(self):
         topics = Topic.objects.filter(module=self.pk)
@@ -166,6 +176,10 @@ class ParticipantPost(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = MarkdownxField(blank=True)
+    enrollment = models.ManyToManyField(Program, related_name='participants')
+
+    def __str__(self):
+        return self.user.username
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
