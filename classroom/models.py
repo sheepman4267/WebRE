@@ -25,7 +25,7 @@ class Module(models.Model):
     updated_date = models.DateField('date updated', default=datetime.date.today, editable=False)
     body = MarkdownxField()
     background_color = ColorField(default='#FFFFFF')
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, unique=False)
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, unique=False, null=True)
     enabled = models.BooleanField(default=False)
 
     def pages(self):
