@@ -59,8 +59,10 @@ def module(request, module, page=0):
     cards = BingoCard.objects.filter(module=module)
     if cards.exists():
         bingocard = cards[0]
+        bingocard_items = bingocard.items.all()
     else:
         bingocard = None
+        bingocard_items = []
     return render(request, 'classroom/module.html', {
         "module": module,
         "body": body,
@@ -71,7 +73,7 @@ def module(request, module, page=0):
         "prev_page": page - 1,
         "request": request,
         "bingocard": bingocard,
-        "bingocard_items": bingocard.items.all()
+        "bingocard_items": bingocard_items,
     })
 
 @login_required()
