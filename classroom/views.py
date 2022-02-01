@@ -12,6 +12,9 @@ from .forms import ParticipantPostForm, WebREUserCreationForm
 
 @login_required
 def index(request):
+    index_items = Program.objects.filter(participants=request.user.profile)
+    if len(index_items) == 1:
+        return HttpResponseRedirect(f"/program/{index_items[0].pk}")
     return render(request, 'classroom/index.html', {
         "index_items": Program.objects.filter(participants=request.user.profile),
         "background_color": "#0f0f0f",
@@ -20,9 +23,12 @@ def index(request):
 
 @login_required()
 def program(request, program):
+    index_items = Module.objects.filter(program=program, enabled=True)
+    if len(index_items) == 1:
+        return HttpResponseRedirect(f'/modules/{index_items[0].pk}/1')
     program = get_object_or_404(Program, pk=program)
     return render(request, 'classroom/index.html', {
-        "index_items": Module.objects.filter(program=program),
+        "index_items": index_items,
         "background_color": program.background_color,
         "dest_type": "modules",
     })
