@@ -9,24 +9,74 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
+import os
 
+def strToBool(string):
+    d = {'True': True, 'False': False}
+    return d.get(string, string)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-Production = False
+PRODUCTION = strToBool(os.environ['WEBRE_IN_PRODUCTION'])
+DEBUG = not PRODUCTION
+
+try:
+    SECRET_KEY = os.environ['WEBRE_SECRET_KEY']
+except KeyError: #If we're running in production, fail with no secret key. Otherwise, do what you like.
+    if PRODUCTION:
+        raise ImproperlyConfigured('No Secret Key found! Specify one with the environmental variable "WEBRE_SECRET_KEY".')
+    else:
+        SECRET_KEY = 'django-insecure-53!-(dsf5a!w_a@^&#r7f*7yo4fol^w#nj_a)1%db6c&2p+5-2'
+
+if PRODUCTION:
+    try:
+        ALLOWED_HOSTS = os.environ['WEBRE_ALLOWED_HOSTS'].split(',')
+    except KeyError:
+        if PRODUCTION:
+            raise ImproperlyConfigured('No Allowed Hosts specified. Specify them, comma-separated, in the environmental variable "WEBRE_ALLOWED_HOSTS".')
+        else:
+            ALLOWED_HOSTS = []
+
+if PRODUCTION: #Change this later to allow for other DB backends, probably
+    ALLOWED_HOSTS = ["webre.uubloomington.org"]
+    try:
+        db_service = os.environ['WEBRE_POSTGRES_SERVICE']
+    except KeyError:
+        raise ImproperlyConfigured('No PostgreSQL Service specified! Specify one with the environment variable "WEBRE_POSTGRES_SERVICE".')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'OPTIONS': {
+                'service': db_service,
+                'passfile': '.webre_production_pgpass',
+            }
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
+try:
+    STATIC_ROOT = os.environ['WEBRE_STATIC_ROOT']#"/var/www/webre.uubloomington.org"
+except KeyError:
+    if PRODUCTION:
+        raise ImproperlyConfigured('No Static Root configured! Use the environmental variable "WEBRE_STATIC_ROOT".')
+    else:
+        STATIC_ROOT = './staticfiles'
+
 # Quick-start development settings - unsuitable for production
 # See
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-53!-(dsf5a!w_a@^&#r7f*7yo4fol^w#nj_a)1%db6c&2p+5-2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -77,13 +127,6 @@ WSGI_APPLICATION = 'WebRE.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -120,7 +163,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = './staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -128,14 +170,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 
-if Production:
-    ALLOWED_HOSTS = ["webre.uubloomington.org"]
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'OPTIONS': {
-                'service': 'webre_production',
-                'passfile': '.webre_production_pgpass',
-            }
-        }
-    }
