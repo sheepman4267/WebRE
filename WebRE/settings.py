@@ -42,6 +42,10 @@ if PRODUCTION:
 if PRODUCTION: #Change this later to allow for other DB backends, probably
     ALLOWED_HOSTS = ["webre.uubloomington.org"]
     try:
+        db_password = os.environ['WEBRE_POSTGRES_PASSWORD']
+    except KeyError:
+        raise ImproperlyConfigured('No PostgrSQL Password specified! Specify one with the environment variable "WEBRE_POSTGRES_PASSWORD".')
+    try:
         db_service = os.environ['WEBRE_POSTGRES_SERVICE']
     except KeyError:
         raise ImproperlyConfigured('No PostgreSQL Service specified! Specify one with the environment variable "WEBRE_POSTGRES_SERVICE".')
@@ -50,7 +54,7 @@ if PRODUCTION: #Change this later to allow for other DB backends, probably
             'ENGINE': 'django.db.backends.postgresql',
             'OPTIONS': {
                 'service': db_service,
-                'passfile': '.webre_production_pgpass',
+                'password': db_password,
             }
         }
     }
