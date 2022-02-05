@@ -39,6 +39,14 @@ if PRODUCTION:
         else:
             ALLOWED_HOSTS = []
 
+    try:
+        CSRF_TRUSTED_ORIGINS = os.environ['WEBRE_CSRF_TRUSTED_ORIGINS'].split(',')
+    except KeyError:
+        if PRODUCTION:
+            raise ImproperlyConfigured('No CSRF Trusted Origins Configured. Specofy them, comma-separated, in the environmental variable "WEBRE_CSRF_TRUSTED_ORIGINS".')
+        else:
+            CSRF_TRUSTED_ORIGINS = []
+
 if PRODUCTION: #Change this later to allow for other DB backends, probably
     ALLOWED_HOSTS = ["webre.uubloomington.org"]
     try:
