@@ -2,4 +2,4 @@
 
 python3.9 -m venv venv
 source venv/bin/activate
-pip install -m requirements.txt.production
+pip install -r requirements.txt.production
