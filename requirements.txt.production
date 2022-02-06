@@ -3,3 +3,4 @@ django-colorfield
 django-markdownx==4.0.0b1
 honcho
 gunicorn
+psycopg2-binary
