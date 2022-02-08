@@ -19,7 +19,10 @@ def strToBool(string):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-PRODUCTION = strToBool(os.environ['WEBRE_IN_PRODUCTION'])
+try:
+    PRODUCTION = strToBool(os.environ['WEBRE_IN_PRODUCTION'])
+except:
+    PRODUCTION = False
 DEBUG = not PRODUCTION
 
 try:
