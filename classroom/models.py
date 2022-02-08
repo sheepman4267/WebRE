@@ -30,7 +30,10 @@ class Module(models.Model):
 
     def pages(self):
         topics = Topic.objects.filter(module=self.pk)
-        return max([topic.page for topic in topics])
+        if len(topics) == 0:
+            return 0
+        else:
+            return max([topic.page for topic in topics])
 
     def save(self, *args, **kwargs):
         self.updated_date = datetime.date.today()
@@ -133,12 +136,17 @@ def order_items(sender, instance, **kwargs):
 class BingoCardItem(models.Model):
     card = models.ForeignKey(BingoCard, on_delete=models.CASCADE, unique=False, related_name='items')
     body = MarkdownxField(null=True)
+    body_markdown = models.TextField(null=True)
     pos_x = models.IntegerField()
     pos_y = models.IntegerField()
     sequence = models.IntegerField(null=True)
     visible = models.BooleanField(default=True)
     class Meta:
         ordering = ['sequence']
+
+    def save(self, *args, **kwargs):
+        self.body_markdown = markdownify(self.body)
+        super(BingoCardItem, self,).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.card.title}: {self.pos_y}x{self.pos_x}'

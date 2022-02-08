@@ -17,7 +17,7 @@
         {% for item in card_items %}
             {% if item.visible %}
                 <div class="bingo-card-item">
-                    {{ item.body }}
+                    {{ item.body_markdown|safe }}
                 </div>
             {% endif %}
         {% endfor %}

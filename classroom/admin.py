@@ -48,6 +48,7 @@ class BingoCardItemAdmin(MarkdownxModelAdmin):
         'sequence',
         'card',
         'visible',
+        'body_markdown',
     ]
 
 class ProfileInline(admin.StackedInline):

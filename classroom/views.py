@@ -52,6 +52,8 @@ def module(request, module, page=0):
     if len(topics) <= 0:
         raise Http404()
     body = markdownify(module.body)
+    if pages == 0:
+        return Http404('That page does not exist')
     if pages > 1:
         if page == 1:
             page_buttons = ['next']
