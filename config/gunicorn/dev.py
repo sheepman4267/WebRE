@@ -16,10 +16,10 @@ except IndexError:
 # Restart workers when code changes (development only!)
 reload = True
 # Write access and error info to /var/log
-accesslog = errorlog = "/var/log/gunicorn/dev.log"
+accesslog = errorlog = f"/var/log/gunicorn/{os.environ['GUNICORN_PID_LOG_PREFIX']}.log"
 # Redirect stdout/stderr to log file
 capture_output = True
 # PID file so you can easily fetch process ID
-pidfile = "/var/run/gunicorn/dev.pid"
+pidfile = f"/var/run/gunicorn/{os.environ['GUNICORN_PID_LOG_PREFIX']}.pid"
 # Daemonize the Gunicorn process (detach & enter background)
 daemon = True
