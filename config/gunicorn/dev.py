@@ -1,3 +1,5 @@
+import os
+
 # Django WSGI application path in pattern MODULE_NAME:VARIABLE_NAME
 wsgi_app = "WebRE.wsgi:application"
 # The granularity of Error log outputs
@@ -5,7 +7,12 @@ loglevel = "debug"
 # The number of worker processes for handling requests
 workers = 2
 # The socket to bind
-bind = "0.0.0.0:8000"
+try:
+    bind = os.environ['GUNICORN_BIND_ADDRESS']
+except IndexError:
+    print("You didn't specify a bind address and port. Use the environment variable 'GUNICORN_BIND_ADDRESS' with the format '0.0.0.0:8000'.")
+    bind = None
+    exit(1)
 # Restart workers when code changes (development only!)
 reload = True
 # Write access and error info to /var/log
