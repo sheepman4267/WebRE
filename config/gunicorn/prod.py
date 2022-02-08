@@ -1,3 +1,5 @@
+import os
+
 # Django WSGI application path in pattern MODULE_NAME:VARIABLE_NAME
 wsgi_app = "WebRE.wsgi:application"
 # The granularity of Error log outputs
