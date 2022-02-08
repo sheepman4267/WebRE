@@ -1,0 +1,8 @@
+[Service]
+User=webre
+WorkingDirectory=/home/webre/WebRE
+ExecStart=source /home/webre/WebRE/venv/bin/activate && honcho start
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardErrpr=syslog
