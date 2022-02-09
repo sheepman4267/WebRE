@@ -23,7 +23,7 @@ class Module(models.Model):
     title = models.CharField(max_length=200)
     publish_date = models.DateField('date published', default=datetime.date.today, editable=False)
     updated_date = models.DateField('date updated', default=datetime.date.today, editable=False)
-    body = MarkdownxField()
+    body = MarkdownxField(blank=True)
     background_color = ColorField(default='#FFFFFF')
     program = models.ForeignKey(Program, on_delete=models.CASCADE, unique=False, null=True)
     enabled = models.BooleanField(default=False)
