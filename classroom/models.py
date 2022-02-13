@@ -27,6 +27,7 @@ class Module(models.Model):
     background_color = ColorField(default='#FFFFFF')
     program = models.ForeignKey(Program, on_delete=models.CASCADE, unique=False, null=True)
     enabled = models.BooleanField(default=False)
+    visible = models.BooleanField(default=True)
 
     def pages(self):
         topics = Topic.objects.filter(module=self.pk)

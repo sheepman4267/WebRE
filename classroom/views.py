@@ -23,7 +23,10 @@ def index(request):
 
 @login_required()
 def program(request, program):
-    index_items = Module.objects.filter(program=program, enabled=True)
+    if request.user.is_staff:
+        index_items = Module.objects.filter(program=program)
+    else:
+        index_items = Module.objects.filter(program=program, enabled=True, visible=True)
     if len(index_items) == 1:
         return HttpResponseRedirect(f'/modules/{index_items[0].pk}/1')
     program = get_object_or_404(Program, pk=program)
@@ -37,7 +40,10 @@ def program(request, program):
 
 @login_required()
 def module(request, module, page=0):
-    module = get_object_or_404(Module, pk=module)
+    if request.user.is_staff:
+        module = get_object_or_404(Module, pk=module)
+    else:
+        module = get_object_or_404(Module, pk=module, enabled=True)
     pages = module.pages()
     if request.method == 'POST':
         form = ParticipantPostForm(request.POST)

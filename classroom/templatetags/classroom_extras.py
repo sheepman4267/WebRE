@@ -1,6 +1,6 @@
 from django import template
 
-from classroom.models import ParticipantPost
+from classroom.models import ParticipantPost, Module, Program
 from classroom.forms import ParticipantPostForm
 
 register = template.Library()
@@ -21,3 +21,17 @@ def topic(topic, request):
         'form': form,
     })
 
+@register.inclusion_tag('classroom/index-item-new.html')
+def index_item(item, dest_type):
+    if not item.enabled:
+        style_class = "index-item disabled"
+    elif not item.visible:
+        style_class = "index-item invisible"
+    else:
+        style_class = "index-item"
+    return({
+        'title': item.title,
+        'item': item,
+        'style_class': style_class,
+        'dest_type': dest_type,
+    })

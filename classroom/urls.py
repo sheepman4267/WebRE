@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name="index"),
     path('program/<int:program>/', views.program, name='program'),
-    path('modules/<int:module>/', views.module),
-    path('modules/<int:module>/<int:page>', views.module, name='module'),
+    path('modules/<int:module>/', views.module, name='modules'),
+    path('modules/<int:module>/<int:page>', views.module),
     path('posts/<int:post>', views.participant_post, name='post'),
     path('posts/<int:post>/short', views.participant_post_short, name='post-short'),
     path('posts/submit/<int:topic>', views.participant_post_submit, name='post-submit'),

@@ -1,5 +1,5 @@
 {% extends "classroom/base.html" %}
-
+{% load classroom_extras %}
 {% block head %}
 <head>
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
         <div class="body">
             <div class="index-container">
                 {% for i in index_items %}
-                    {% include "classroom/index-item.html" with item=i dest_type=dest_type %}
+                    {% index_item i dest_type %}
                 {% endfor %}
             </div>
         </div>
