@@ -12,13 +12,16 @@ from .forms import ParticipantPostForm, WebREUserCreationForm
 
 @login_required
 def index(request):
-    index_items = Program.objects.filter(participants=request.user.profile)
+    if request.user.is_staff:
+        index_items = Program.objects.all()
+    else:
+        index_items = Program.objects.filter(participants=request.user.profile, enabled=True, visible=True)
     if len(index_items) == 1:
         return HttpResponseRedirect(f"/program/{index_items[0].pk}")
     return render(request, 'classroom/index.html', {
-        "index_items": Program.objects.filter(participants=request.user.profile),
+        "index_items": index_items,
         "background_color": "#0f0f0f",
-        "dest_type": "program"
+        "dest_type": "program",
     })
 
 @login_required()

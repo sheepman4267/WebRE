@@ -15,6 +15,8 @@ class Program(models.Model):
     title = models.CharField(max_length=200)
     body = MarkdownxField()
     background_color = ColorField(default='#FFFFFF')
+    enabled = models.BooleanField(default=False)
+    visible = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
