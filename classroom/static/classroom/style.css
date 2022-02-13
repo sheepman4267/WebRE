@@ -102,14 +102,19 @@
 }
 
 .index-item.disabled {
-    background-color: darksalmon;
+    background-color: #d4a999;
 }
 
 .index-item.invisible {
-    background-color: #f7f7f7;
+    background-color: #e7e7e7;
 }
 
-.index-item.invisible a:link {color: #afafaf}
+.index-item.disabled a:link {
+    color: #704535;
+}
+.index-item.invisible a:link {
+    color: #afafaf;
+}
 
 .participant-post {
     padding: 5mm;
