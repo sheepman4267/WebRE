@@ -12,11 +12,11 @@
             <title>IMUU Classroom</title>
         </head>
     {% endblock %}
-    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="main-body">
+    <body id="body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="main-body">
         {% block navpanel %}
         {% include "classroom/navpanel.html" %}
         {% endblock %}
-        <div class="base">
+        <div class="base" id="base">
             {% block main %} {% endblock %}
         </div>
     </body>

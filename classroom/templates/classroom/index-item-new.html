@@ -1,3 +1,3 @@
-<div class="{{ style_class }}">
-    <a href="{% url dest_type item.pk %}"><b>{{ item.title }}</b></a>
+<div hx-get="{% url dest_type item.pk %}" hx-push-url="true" hx-select="#base" hx-target="#base" class="{{ style_class }}">
+    <h3>{{ item.title }}</h3>
 </div>
