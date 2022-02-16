@@ -54,11 +54,33 @@
 }
 
 .nav-button {
-    height: 100%;
-    min-width: 18%;
-    font-size: 20pt;
-    margin: 0.5em;
-    border-radius: 0.5em;
+    height: 80%;
+    min-width: 10em;
+    font-size: 15pt;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 4pt;
+    margin-right: 4pt;
+    border-radius: 2pt;
+    padding: 2pt;
+    text-align: center;
+    background-color: #F1F1F1;
+}
+
+.nav-button:hover {
+    box-shadow: 0 0 3px #1f1d1d;
+}
+
+.nav-button.right {
+    float: right;
+}
+
+.nav-button.left {
+    float: left;
+}
+
+.nav-button label {
+    margin-top: 2pt;
 }
 
 .left-item {

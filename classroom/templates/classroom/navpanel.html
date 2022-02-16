@@ -1,7 +1,10 @@
+{% load classroom_extras %}
+
 <!DOCTYPE html>
 <html lang="en">
-<div class="nav-panel">
-    <span class="left-item"><a href="/">WebRE Online Classroom</a></span>
-    <span class="right-item">{% if request.user.is_staff %}<a href="/admin">Administration</a>{% endif %}<a href="/accounts/logout/">Log Out</a></span>
-</div><br>
+<span class="nav-panel">
+    {% nav_button text="Home" url="/" side="left" privileged=False request=request %}
+    {% nav_button text="Log Out" url="/accounts/logout/" side="right" privileged=False request=request %}
+    {% nav_button text="Administration" url="/admin" side="right" privileged=True request=request %}
+</span><br>
 </html>

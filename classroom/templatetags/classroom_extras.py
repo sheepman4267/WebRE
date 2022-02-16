@@ -35,3 +35,17 @@ def index_item(item, dest_type):
         'style_class': style_class,
         'dest_type': dest_type,
     })
+
+@register.inclusion_tag('classroom/nav-button.html')
+def nav_button(text, url, side, privileged, request):
+    if privileged:
+        if not request.user.is_staff:
+            return({
+                'render': False
+            })
+    return({
+        'render': True,
+        'url': url,
+        'text': text,
+        'side': side,
+    })
