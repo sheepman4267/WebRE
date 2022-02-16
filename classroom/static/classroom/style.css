@@ -37,7 +37,7 @@
     font-size: 18pt;
     width: auto;
     text-align: left;
-    background-color: #ffffff;
+    background-color: #F1F1F1;
     padding: 2mm;
 }
 
@@ -85,7 +85,7 @@
 .bingo-card-item {
     height: 3cm;
     min-width: 2.75cm;
-    background-color: #ffffff;
+    background-color: #F1F1F1;
     border: #000000;
     border-width: 10px;
     text-align: center;
@@ -101,15 +101,28 @@
     margin: 0 auto;
 }
 
+.index-container a {
+    text-decoration: none;
+}
+
 .index-item {
     height: 4cm;
     min-width: 5cm;
     padding: 5mm;
-    background-color: #ffffff;
+    background-color: #F1F1F1;
     text-align: center;
 }
 .index-item h3 {
     margin-top: 0.2em;
+    color: #000000;
+}
+
+.index-item hr {
+    height: 0.1em;
+}
+
+.index-item:hover {
+    box-shadow: 0 0 3px #1f1d1d;
 }
 
 .index-item.disabled {
