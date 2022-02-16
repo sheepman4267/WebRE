@@ -164,6 +164,9 @@
 
 .participant-post {
     padding: 5mm;
-    background-color: #2cc36b;
+    background-color: #F1F1F1;
+}
+
+.participant-post:hover {
     box-shadow: 0 0 3px #1f1d1d;
 }
