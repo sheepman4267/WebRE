@@ -20,7 +20,7 @@ def index(request):
         return HttpResponseRedirect(f"/program/{index_items[0].pk}")
     return render(request, 'classroom/index.html', {
         "index_items": index_items,
-        "background_color": "#0f0f0f",
+        "background_color": "#AFAFAF",
         "dest_type": "program",
     })
 
