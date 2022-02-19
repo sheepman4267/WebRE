@@ -86,6 +86,9 @@ except KeyError:
     else:
         STATIC_ROOT = './staticfiles'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
+
 # Quick-start development settings - unsuitable for production
 # See
 
