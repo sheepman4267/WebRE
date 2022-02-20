@@ -5,11 +5,18 @@
 
 {% block main %}
 <div class="body" id="auth-body">
-    <h2>Sign Up</h2>
+    <h1>Sign Up for WebRE</h1>
+    <h2>Account Information</h2>
+    <p>First, we need you to create your account details:</p>
     <form method="post" action="/signup">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>Username: {{ form.username }}</p>
+        <p>Password: {{ form.password1 }}</p>
+        <span id="blank"></span>
+        <p>Confirm Password: {{ form.password2 }}{{ form.password2.errors }}</p>
         <button type="submit">Sign up</button>
     </form>
+    <h2>Program Enrollment</h2>
+
 </div>
 {% endblock %}

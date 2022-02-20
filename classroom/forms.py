@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import ParticipantPost
 from markdownx.fields import MarkdownxFormField
+from django.forms import TextInput, EmailInput, PasswordInput
 
 class ParticipantPostForm(forms.ModelForm):
     class Meta:
@@ -13,6 +14,23 @@ class ParticipantPostForm(forms.ModelForm):
                   )
 
 class WebREUserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs.update({'hx-get': '/static/classroom/passwordinfo.html',
+                                                      'hx-trigger': 'focus',
+                                                      'hx-select': '#info',
+                                                      'hx-target': '#blank',
+                                                      'hx-swap': 'outerHTML',
+                                                      'hx-params': 'none'
+                                                      })
+        self.fields['password2'].widget.attrs.update({'hx-get': '/static/classroom/passwordinfo.html',
+                                                      'hx-trigger': 'focus',
+                                                      'hx-select': '#blank',
+                                                      'hx-target': '#info',
+                                                      'hx-swap': 'outerHTML',
+                                                      'hx-params': 'none'
+                                                      })
+
     class Meta:
         model = User
         fields = (
@@ -20,3 +38,4 @@ class WebREUserCreationForm(UserCreationForm):
             'password1',
             'password2',
         )
+

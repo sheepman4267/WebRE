@@ -177,6 +177,10 @@ def create_user(request):
             #user.profile.attr = value
             #user.save()
             return HttpResponseRedirect('after_signup')
+        else:
+            return render(request, 'registration/create-user.html', context={
+                'form': form
+            })
     else:
         form = WebREUserCreationForm()
         return render(request, 'registration/create-user.html', context={
