@@ -8,7 +8,7 @@ from django.http import HttpResponseNotFound, Http404
 from markdownx.utils import markdownify
 
 from .models import Module, ParticipantPost, Topic, BingoCard, Program
-from .forms import ParticipantPostForm, WebREUserCreationForm
+from .forms import ParticipantPostForm, WebREUserCreationForm, WebREProfileForm
 
 @login_required
 def index(request):
@@ -170,19 +170,23 @@ def after_signup(request):
 
 def create_user(request):
     if request.method == 'POST':
-        form = WebREUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        user_form = WebREUserCreationForm(request.POST)
+        profile_form = WebREProfileForm(request.POST)
+        print(request.POST)
+        if user_form.is_valid and profile_form.is_valid():
+            user = user_form.save()
             user.refresh_from_db()
             #user.profile.attr = value
             #user.save()
             return HttpResponseRedirect('after_signup')
         else:
             return render(request, 'registration/create-user.html', context={
-                'form': form
+                'user_form': user_form
             })
     else:
-        form = WebREUserCreationForm()
+        user_form = WebREUserCreationForm()
+        profile_form = WebREProfileForm()
         return render(request, 'registration/create-user.html', context={
-            'form': form,
+            'user_form': user_form,
+            'profile_form': profile_form,
         })

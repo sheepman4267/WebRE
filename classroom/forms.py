@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import ParticipantPost
+from .models import ParticipantPost, Profile, Program
 from markdownx.fields import MarkdownxFormField
 from django.forms import TextInput, EmailInput, PasswordInput
 
@@ -37,5 +37,16 @@ class WebREUserCreationForm(UserCreationForm):
             'username',
             'password1',
             'password2',
+            'email',
         )
 
+class WebREProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(WebREProfileForm, self).__init__(*args, **kwargs)
+        self.fields['enrollment'].queryset = Program.objects.filter(enabled=True, visible=True)
+
+    class Meta:
+        model = Profile
+        fields = {
+            'enrollment'
+        }
