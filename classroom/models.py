@@ -1,8 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.conf import settings
+
+from templated_email import send_templated_mail
 
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdownify
@@ -191,6 +194,26 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+@receiver(pre_save, sender=User)
+def on_activation(sender, instance, **kwargs):
+    if instance.id == None:
+        if instance.is_active == True:
+            send_activation_email(username=instance.username)
+    else:
+        previous = sender.objects.get(id=instance.id)
+        if previous.is_active != instance.is_active and instance.is_active == True:
+            send_activation_email(username=instance.username)
+
+def send_activation_email(username):
+    send_templated_mail(template_name='enduser-new-user-approved',
+                        from_email=settings.WEBRE_EMAIL_ACCOUNTS_FROM_ADDRESS,
+                        recipient_list=[user.email for user in User.objects.filter(username=username)],
+                        context={
+                            'newusername': username,
+                            'url': 'https://webre.uubloomington.org/accounts/login'
+                        }
+                        )
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
