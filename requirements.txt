@@ -1,3 +1,6 @@
 Django~=4.0.1
 django-colorfield
 django-markdownx==4.0.0b1
+django-templated-email
+html2text
+django-anymail[sendgrid]
