@@ -1,9 +1,13 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, reverse
 from django.shortcuts import HttpResponseRedirect
 from django.http import HttpResponseNotFound, Http404
+from django.conf import settings
+
+from templated_email import send_templated_mail
 
 from markdownx.utils import markdownify
 
@@ -178,6 +182,22 @@ def create_user(request):
             user.refresh_from_db()
             #user.profile.attr = value
             #user.save()
+            send_templated_mail(template_name='admin-new-user-notify',
+                                from_email=settings.WEBRE_EMAIL_ACCOUNTS_FROM_ADDRESS,
+                                recipient_list = [user.email for user in User.objects.filter(is_staff=True)],
+                                context = {
+                                    'newusername': user.username,
+                                    'adminusername': 'Admin', #TODO: come up with a way to make this nicer
+                                    'url': 'https://webre.uubloomington.org/admin'
+                                }
+                                )
+            send_templated_mail(template_name='enduser-new-user-confirmation',
+                                from_email=settings.WEBRE_EMAIL_ACCOUNTS_FROM_ADDRESS,
+                                recipient_list=[user.email],
+                                context={
+                                    'newusername': user.username,
+                                }
+                                )
             return HttpResponseRedirect('after_signup')
         else:
             return render(request, 'registration/create-user.html', context={

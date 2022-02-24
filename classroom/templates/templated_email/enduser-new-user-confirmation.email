@@ -1,0 +1,8 @@
+{% block subject %}Your WebRE account has been submitted!{% endblock %}
+{% block html %}
+    Hello, {{ newusername }}!<br>
+    Your WebRE account has been submitted. You will receive another email when it has been activated.<br>
+    <br>
+    <br>
+    -Your Friendly Neighborhood WebRE Instance
+{% endblock %}

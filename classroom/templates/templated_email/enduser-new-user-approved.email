@@ -1,0 +1,8 @@
+{% block subject %}Your WebRE account has been approved!{% endblock %}
+{% block html %}
+    Hello, {{ newusername }}!<br>
+    Your WebRE account has been approved. You may now <a href="{{ url }}">log in</a> and explore your programs.<br>
+    <br>
+    <br>
+    -Your Friendly Neighborhood WebRE Instance
+{% endblock %}
