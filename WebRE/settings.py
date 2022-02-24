@@ -86,6 +86,16 @@ except KeyError:
     else:
         STATIC_ROOT = './staticfiles'
 
+WEBRE_EMAIL_ACCOUNTS_FROM_ADDRESS = os.environ['WEBRE_EMAIL_ACCOUNTS_FROM_ADDRESS']
+
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+
+ANYMAIL = {
+    "SENDGRID_API_KEY": os.environ["SENDGRID_API_KEY"],
+}
+
+#TEMPLATED_EMAIL_BACKEND = "anymail.message.AnymailMessage"
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 

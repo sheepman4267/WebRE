@@ -1,0 +1,8 @@
+{% block subject %}{{ newusername }} has just signed up for WebRE. Please review their account.{% endblock %}
+{% block html %}
+    Hello, {{ adminusername }}!<br>
+    {{ newusername }} has just signed up for WebRE. Please <a href="{{ adminurl }}">review their account</a>.<br>
+    <br>
+    <br>
+    -Your Friendly Neighborhood WebRE Instance
+{% endblock %}

@@ -5,10 +5,21 @@
 
 {% block main %}
 <div class="body" id="auth-body">
-    <h2>Sign Up</h2>
+    <h1>Sign Up for WebRE</h1>
+    <h2>Account Information</h2>
+    <p>First, we need you to create your account details:</p>
     <form method="post" action="/signup">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>Username: {{ user_form.username }}{{ user_form.username.errors }}</p>
+        <p>Password: {{ user_form.password1 }}{{ user_form.password1.errors }}</p>
+        <span id="blank"></span>
+        <p>Confirm Password: {{ user_form.password2 }}{{ user_form.password2.errors }}</p>
+        <p>Email Address: {{ user_form.email }}{{ user_form.email.errors}}</p>
+        <p>An Email Address is not required. You may want to use one for</p>
+        <h2>Program Enrollment</h2>
+        <p>Please select the program(s) you would like to enroll in. If you don't know, you can skip this step.</p>
+        <p>Select multiple by holding the control key on your keyboard.</p>
+        <p>{{ profile_form.enrollment }}</p>
         <button type="submit">Sign up</button>
     </form>
 </div>
