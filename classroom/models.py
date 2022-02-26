@@ -56,6 +56,7 @@ class Topic(models.Model):
     accent_color = ColorField(default='#FFFFFF')
     module = models.ForeignKey(Module, on_delete=models.CASCADE, unique=False)
     page = models.IntegerField()
+    order = models.IntegerField('Order on Page')
     body_markdown = models.TextField(null=True)
     participant_posts_allowed = models.BooleanField("Allow Participant Posts", default=True)
     participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
@@ -72,6 +73,9 @@ class Topic(models.Model):
 
     def user_posts(self, user):
         return self.posts.filter(topic=self.pk, owner=user)
+
+    class Meta:
+        ordering = ['order']
 
 class BingoCard(models.Model):
     title = models.CharField(max_length=200)
