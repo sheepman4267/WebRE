@@ -1,5 +1,6 @@
 <div class="body" id="body">
     {{ topic.body_markdown|safe }}
+    {% if topic.participant_posts_allowed %}
     {% if post %}
     <div hx-get="/posts/{{ post.pk }}" hx-swap="outerHTML" id="participant-post" class="participant-post">
         <h4>{{ post.title }}</h4>
@@ -10,5 +11,6 @@
         <div hx-get="/posts/edit/{{ topic.pk }}" hx-swap="outerHTML" id="new-post" class="participant-post">
             <a><h3>Share Your Thoughts...</h3></a>
         </div>
+    {% endif %}
     {% endif %}
 </div>
