@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.shortcuts import HttpResponseRedirect
 from django.http import HttpResponseNotFound, Http404
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 
 from templated_email import send_templated_mail
 
@@ -138,6 +139,8 @@ def participant_post_edit(request, topic=None, post=None): #TODO: Confirm that t
 def participant_post_submit(request, topic=None, post=None): #TODO: Confirm that the user actually owns the post
     if request.method == 'POST':
         topic = Topic.objects.get(pk=topic)
+        if not topic.participant_posts_allowed:
+            return PermissionDenied('Participant Posts are not allowed on this topic.')
         if post:
             post = ParticipantPost.objects.get(pk=post)
             if request.user != post.owner:
