@@ -123,37 +123,51 @@ def participant_post_short(request, post):
     })
 
 @login_required()
-def participant_post_edit(request, topic=None, post=None): #TODO: Confirm that the user actually owns the post
-    if post:
+def participant_post_edit(request, topic=None, post=None, post_type=None): #TODO: Confirm that the user actually owns the post
+    if post_type == 'reply':
+        form = ParticipantPostForm()
+        post_id = post
+        template = 'classroom/participant-post-reply-edit.html'
+    print(post_type)
+    if post and not post_type == "reply":
         post = ParticipantPost.objects.get(pk=post)
         if request.user != post.owner:
             raise PermissionDenied()
         form = ParticipantPostForm(instance=post)
         post_id = f'/{post.pk}'
         topic = post.topic.pk
-    else:
+        print('gothere1')
+        template = 'classroom/participant-post-edit.html'
+    elif post_type != 'reply':
         form = ParticipantPostForm()
+        print('gothere2')
         post_id = ''
-    return render(request, "classroom/participant-post-edit.html", {
+        template = 'classroom/participant-post-edit.html'
+    return render(request, template, {
         'form': form,
         'topic': topic,
         'post_id': post_id,
     })
 
 @login_required()
-def participant_post_submit(request, topic=None, post=None): #TODO: Confirm that the user actually owns the post
+def participant_post_submit(request, topic=None, post=None, post_type=None): #TODO: Confirm that the user actually owns the post
     if request.method == 'POST':
-        topic = Topic.objects.get(pk=topic)
-        if not topic.participant_posts_allowed:
-            return PermissionDenied('Participant Posts are not allowed on this topic.')
-        if post:
-            post = ParticipantPost.objects.get(pk=post)
-            if request.user != post.owner:
-                raise PermissionDenied()
-            form = ParticipantPostForm(request.POST, instance=post)
-        else:
-            post = ParticipantPost(owner=request.user, topic=topic)
+        if post_type == 'reply':
+            print('Reply!')
+            post = ParticipantPost(owner=request.user, post=ParticipantPost.objects.get(pk=post))
             form = ParticipantPostForm(request.POST)
+        else:
+            topic = Topic.objects.get(pk=topic)
+            if not topic.participant_posts_allowed:
+                return PermissionDenied('Participant Posts are not allowed on this topic.')
+            if post and not post_type == 'reply':
+                post = ParticipantPost.objects.get(pk=post)
+                if request.user != post.owner:
+                    raise PermissionDenied()
+                form = ParticipantPostForm(request.POST, instance=post)
+            else:
+                post = ParticipantPost(owner=request.user, topic=topic)
+                form = ParticipantPostForm(request.POST)
         if form.is_valid():
             post.title = form.cleaned_data['title']
             post.body = form.cleaned_data['body']
@@ -164,7 +178,7 @@ def participant_post_submit(request, topic=None, post=None): #TODO: Confirm that
             #    body = form.cleaned_data['body'],
             #)
             post.save()
-            return(HttpResponseRedirect(reverse("module", args=(topic.module.pk, topic.page))))
+            return(HttpResponseRedirect(reverse("module", args=(post.topic.module.pk, post.topic.page))))
 
 @login_required()
 def topic_detail(request, topic):
