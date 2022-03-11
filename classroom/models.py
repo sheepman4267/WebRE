@@ -177,7 +177,11 @@ class ParticipantPost(models.Model):
     response_type = models.Choices
 
     def __str__(self):
-        return f'{self.owner} on {self.topic.title}: {self.title}'
+        if self.topic:
+            return f'{self.owner} on {self.topic.title}: {self.title}'
+        else:
+            return f'{self.owner} replying to {self.post.title}'
+
 
     def save(self, *args, **kwargs):
         if not self.topic.participant_posts_can_be_shared:
