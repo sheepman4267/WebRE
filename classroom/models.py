@@ -184,18 +184,26 @@ class ParticipantPost(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if not self.topic.participant_posts_can_be_shared:
-            self.sharable = False
-        else:
-            self.sharable = True
-        if self.shared == None:
-            if not self.sharable:
-                self.shared = False
-            elif self.topic.force_participant_post_sharing:
-                self.shared = True
-        self.editable = self.topic.participant_posts_are_editable
         self.body_markdown = markdownify(strip_tags(self.body))
         self.body_markdown_short = markdownify(strip_tags(self.body[0:200]))
+        print(self.post)
+        if self.post:
+            self.topic = self.post.topic
+            self.shared = True
+            self.sharable = self.post.sharable
+            self.editable = self.post.editable
+        else:
+            if not self.topic.participant_posts_can_be_shared:
+                self.sharable = False
+            else:
+                self.sharable = True
+            if self.shared == None:
+                if not self.sharable:
+                    self.shared = False
+                elif self.topic.force_participant_post_sharing:
+                    self.shared = True
+            self.editable = self.topic.participant_posts_are_editable
+
         super(ParticipantPost, self).save(*args, **kwargs)
 
 class Profile(models.Model):
