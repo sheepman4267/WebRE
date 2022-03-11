@@ -182,10 +182,9 @@ def participant_post_submit(request, topic=None, post=None, post_type=None): #TO
 
 @login_required()
 def topic_detail(request, topic):
-    topic = Topic(pk=topic)
-    posts = []
-    posts.append(ParticipantPost.objects.filter(topic=topic, owner=request.user))
-    posts.append(ParticipantPost.objects.filter(topic=topic, shared=True))
+    topic = Topic.objects.get(pk=topic)
+    posts = [post for post in ParticipantPost.objects.filter(topic=topic, owner=request.user, post=None)]
+    posts += [post for post in ParticipantPost.objects.filter(topic=topic, shared=True, post=None)]
     return render(request, "classroom/topic-detail-view.html", context={
         'topic': topic,
         'posts': posts,
