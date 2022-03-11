@@ -99,15 +99,20 @@ def module(request, module, page=0):
     })
 
 @login_required()
-def participant_post(request, post):
+def participant_post(request, post, short=False):
+    templates = {
+        True: "classroom/participant-post-short.html",
+        False: "classroom/participant-post-enlarged.html",
+    }
     post = get_object_or_404(ParticipantPost, pk=post)
     if post.editable and request.user == post.owner:
         editable = True
     else:
         editable = False
-    return render(request, "classroom/participant-post-enlarged.html", {
+    return render(request, templates[short], {
         "post": post,
-        "editable": editable
+        "editable": editable,
+        "replies_enabled": post.topic.participant_post_replies_allowed,
     })
 
 @login_required()
