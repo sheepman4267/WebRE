@@ -62,6 +62,7 @@ class Topic(models.Model):
     participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
     participant_posts_can_be_shared = models.BooleanField("Allow Participants to share posts", default=True)
     force_participant_post_sharing = models.BooleanField("Force Participant Posts to be shared with the group", default=False)
+    participant_post_replies_allowed = models.BooleanField("Allow Participant Post Replies", default=True)
 
     def __str__(self):
         return f'{self.module.title}: {self.title}'
