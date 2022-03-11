@@ -174,6 +174,7 @@ class ParticipantPost(models.Model):
     editable = models.BooleanField(default=True)
     shared = models.BooleanField(null=True, default=None)
     sharable = models.BooleanField(default=True)
+    response_type = models.Choices
 
     def __str__(self):
         return f'{self.owner} on {self.topic.title}: {self.title}'
