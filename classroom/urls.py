@@ -8,7 +8,7 @@ urlpatterns = [
     path('modules/<int:module>/', views.module, name='modules'),
     path('modules/<int:module>/<int:page>', views.module, name='module'),
     path('posts/<int:post>', views.participant_post, name='post'),
-    path('posts/<int:post>/short', views.participant_post_short, name='post-short'),
+    path('posts/<int:post>/short', views.participant_post, {'short': True}, name='post-short'),
     path('posts/submit/<int:topic>', views.participant_post_submit, name='post-submit'),
     path('posts/submit/<int:topic>/<int:post>', views.participant_post_submit),
     path('posts/edit/<int:topic>', views.participant_post_edit, name='post-edit'),

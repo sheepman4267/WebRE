@@ -1,8 +1,13 @@
 <div id="postlarge" class="participant-post">
     <h4>{{ post.title }}</h4>
-    {{ post.body_markdown|safe }}<br>
-    <button hx-ext='debug' hx-get="/posts/{{ post.pk }}/short" hx-target="#postlarge" hx-swap="outerHTML">Show Less</button>
-    {% if editable %}
-    <button hx-ext="debug" hx-post="/posts/edit/post/{{ post.pk }}" hx-trigger="click" hx-target="#postlarge" hx-swap="outerHTML">Edit</button>
-    {% endif %}
+    {{ post.body_markdown|safe }}
+    <span class="participant-post-button" hx-get="/posts/{{ post.pk }}/short" hx-target="closest #postlarge" hx-swap="outerHTML">Show Less</span>
+    {% if editable %} <span class="participant-post-button" hx-post="/posts/edit/post/{{ post.pk }}" hx-trigger="click" hx-target="closest #postlarge" hx-swap="outerHTML">Edit</span> {% endif %}
+    {% if replies_enabled %} <span class="participant-post-button" hx-get="/posts/reply/{{ post.pk }}/new" hx-swap="outerHTML">Reply</span> {% endif %}
+    <span class="participant-post-info">Posted on {{ post.date }} by {{ user }} -- {{ post.replies.count }} replies</span>
+    {% for reply in post.replies.all %}
+        {% include "classroom/participant-post-short.html" with post=reply  %}
+    {% endfor %}
+    <div class="participant-post-button-panel">
+    </div>
 </div>
