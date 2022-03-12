@@ -125,9 +125,12 @@ def participant_post_short(request, post):
 @login_required()
 def participant_post_edit(request, topic=None, post=None, post_type=None): #TODO: Confirm that the user actually owns the post
     if post_type == 'reply':
-        form = ParticipantPostForm()
         post_id = post
+        post = ParticipantPost.objects.get(pk=post)
         template = 'classroom/participant-post-reply-edit.html'
+        form = ParticipantPostForm(initial={
+            'title': f'RE: {post.title}'
+        })
     print(post_type)
     if post and not post_type == "reply":
         post = ParticipantPost.objects.get(pk=post)
