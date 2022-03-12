@@ -2,11 +2,7 @@
     {{ topic.body_markdown|safe }}
     {% if topic.participant_posts_allowed %}
     {% if post %}
-    <div hx-get="/posts/{{ post.pk }}" hx-swap="outerHTML" id="participant-post" class="participant-post">
-        <h4>{{ post.title }}</h4>
-        {{ post.body_markdown_short|safe }}...<br>
-        <button hx-target="#closest participant-post">Show More</button>
-    </div>
+        {% include 'classroom/participant-post-short.html' with post=post %}
     {% else %} <!--TODO: Don't show this form until the user click on "Share Your Thoughts" or something. Also allow cancelling.-->
         <div hx-get="/posts/edit/{{ topic.pk }}" hx-swap="outerHTML" id="new-post" class="participant-post">
             <a><h3>Share Your Thoughts...</h3></a>
