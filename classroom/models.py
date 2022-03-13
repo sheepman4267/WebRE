@@ -50,6 +50,7 @@ class Module(models.Model):
 
 class Topic(models.Model):
     title = models.CharField(max_length=200)
+    show_title = models.BooleanField('Show Topic Title', default=True)
     publish_date = models.DateField('date published', default=datetime.date.today, editable=False)
     updated_date = models.DateField('date updated', default=datetime.date.today, editable=False)
     body = MarkdownxField()
@@ -62,6 +63,7 @@ class Topic(models.Model):
     participant_posts_are_editable = models.BooleanField("Allow Participants to edit posts", default=True)
     participant_posts_can_be_shared = models.BooleanField("Allow Participants to share posts", default=True)
     force_participant_post_sharing = models.BooleanField("Force Participant Posts to be shared with the group", default=False)
+    participant_post_replies_allowed = models.BooleanField("Allow Participant Post Replies", default=True)
 
     def __str__(self):
         return f'{self.module.title}: {self.title}'
@@ -73,6 +75,9 @@ class Topic(models.Model):
 
     def user_posts(self, user):
         return self.posts.filter(topic=self.pk, owner=user)
+
+    def post_count(self):
+        return self.posts.filter(post=None).count()
 
     class Meta:
         ordering = ['order']
@@ -166,29 +171,45 @@ class ParticipantPost(models.Model):
     date = models.DateField('date published', default=datetime.date.today)
     body = MarkdownxField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, unique=False, related_name='posts')
+    post = models.ForeignKey("ParticipantPost", on_delete=models.CASCADE, unique=False, related_name='replies', null=True, blank=True)
+    topic = models.ForeignKey("Topic", on_delete=models.CASCADE, unique=False, related_name='posts', null=True, blank=True)
     body_markdown = models.TextField(default='')
     body_markdown_short = models.TextField(default='')
     editable = models.BooleanField(default=True)
-    shared = models.BooleanField(null=True, default=None)
+    shared = models.BooleanField(default=False)
     sharable = models.BooleanField(default=True)
+    just_created = models.BooleanField(default=True)
+    response_type = models.Choices
 
     def __str__(self):
-        return f'{self.owner} on {self.topic.title}: {self.title}'
+        if self.topic:
+            return f'{self.owner} on {self.topic.title}: {self.title}'
+        else:
+            return f'{self.owner} replying to {self.post.title}'
+
 
     def save(self, *args, **kwargs):
-        if not self.topic.participant_posts_can_be_shared:
-            self.sharable = False
-        else:
-            self.sharable = True
-        if self.shared == None:
-            if not self.sharable:
-                self.shared = False
-            elif self.topic.force_participant_post_sharing:
-                self.shared = True
-        self.editable = self.topic.participant_posts_are_editable
         self.body_markdown = markdownify(strip_tags(self.body))
         self.body_markdown_short = markdownify(strip_tags(self.body[0:200]))
+        print(self.post)
+        if self.post:
+            self.topic = self.post.topic
+            self.shared = True
+            self.sharable = self.post.sharable
+            self.editable = self.post.editable
+        else:
+            if not self.topic.participant_posts_can_be_shared:
+                self.sharable = False
+            else:
+                self.sharable = True
+            if self.just_created:
+                if not self.sharable:
+                    self.shared = False
+                elif self.topic.force_participant_post_sharing:
+                    self.shared = True
+            self.editable = self.topic.participant_posts_are_editable
+        self.just_created = False
+
         super(ParticipantPost, self).save(*args, **kwargs)
 
 class Profile(models.Model):

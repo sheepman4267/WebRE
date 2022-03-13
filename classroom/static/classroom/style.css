@@ -7,6 +7,7 @@
     text-align: center;
     align-content: center;
     width: 100%;
+    font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
 .body-base {
@@ -165,8 +166,42 @@
 .participant-post {
     padding: 5mm;
     background-color: #F1F1F1;
+    border-left: 2px solid #8a8a8a;
 }
 
 .participant-post:hover {
-    box-shadow: 0 0 3px #1f1d1d;
+    border-left: 6px solid #8a8a8a;
+}
+
+.participant-post-button {
+    font-style: italic;
+    font-size: 13pt;
+    color: #6a6a6a;
+    margin-right: 5mm;
+}
+
+.participant-post-button:hover {
+    font-weight: bolder;
+    cursor: default;
+}
+
+.participant-post-footer {
+    float: left;
+    font-style: italic;
+    font-size: 13pt;
+    color: #6a6a6a;
+}
+
+.participant-post-footer:hover {
+    font-weight: bolder;
+    cursor: default;
+}
+
+.participant-post-info {
+    float: right;
+    font-style: italic;
+    font-size: 13pt;
+    color: #6a6a6a;
+    margin-bottom: 10mm;
+    cursor: default;
 }

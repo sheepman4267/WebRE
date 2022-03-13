@@ -11,6 +11,7 @@ class ParticipantPostForm(forms.ModelForm):
         body = MarkdownxFormField
         fields = ('title',
                   'body',
+                  'shared',
                   )
 
 class WebREUserCreationForm(UserCreationForm):
