@@ -176,8 +176,9 @@ class ParticipantPost(models.Model):
     body_markdown = models.TextField(default='')
     body_markdown_short = models.TextField(default='')
     editable = models.BooleanField(default=True)
-    shared = models.BooleanField(null=True, default=None)
+    shared = models.BooleanField(default=False)
     sharable = models.BooleanField(default=True)
+    just_created = models.BooleanField(default=True)
     response_type = models.Choices
 
     def __str__(self):
@@ -201,12 +202,13 @@ class ParticipantPost(models.Model):
                 self.sharable = False
             else:
                 self.sharable = True
-            if self.shared == None:
+            if self.just_created:
                 if not self.sharable:
                     self.shared = False
                 elif self.topic.force_participant_post_sharing:
                     self.shared = True
             self.editable = self.topic.participant_posts_are_editable
+        self.just_created = False
 
         super(ParticipantPost, self).save(*args, **kwargs)
 

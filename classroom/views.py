@@ -143,6 +143,8 @@ def participant_post_edit(request, topic=None, post=None, post_type=None): #TODO
         template = 'classroom/participant-post-edit.html'
     elif post_type != 'reply':
         form = ParticipantPostForm()
+        topic = Topic.objects.get(pk=topic)
+        print(topic.force_participant_post_sharing)
         print('gothere2')
         post_id = ''
         template = 'classroom/participant-post-edit.html'
@@ -174,6 +176,7 @@ def participant_post_submit(request, topic=None, post=None, post_type=None): #TO
         if form.is_valid():
             post.title = form.cleaned_data['title']
             post.body = form.cleaned_data['body']
+            post.shared = form.cleaned_data['shared']
             #post = ParticipantPost(
             #    owner = request.user,
             #    topic = topic,
