@@ -1,4 +1,5 @@
 <div class="body" id="body">
+    {% if topic.show_title %}<div class="module-title">{{ topic.title }}</div>{% endif %}
     {{ topic.body_markdown|safe }}
     {% if topic.participant_posts_allowed %}
     {% if post %}

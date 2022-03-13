@@ -50,6 +50,7 @@ class Module(models.Model):
 
 class Topic(models.Model):
     title = models.CharField(max_length=200)
+    show_title = models.BooleanField('Show Topic Title', default=True)
     publish_date = models.DateField('date published', default=datetime.date.today, editable=False)
     updated_date = models.DateField('date updated', default=datetime.date.today, editable=False)
     body = MarkdownxField()
@@ -74,6 +75,9 @@ class Topic(models.Model):
 
     def user_posts(self, user):
         return self.posts.filter(topic=self.pk, owner=user)
+
+    def post_count(self):
+        return self.posts.filter(post=None).count()
 
     class Meta:
         ordering = ['order']
