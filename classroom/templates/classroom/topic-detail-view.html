@@ -15,6 +15,8 @@
     </style>
     <div class="body-base">
         <div class="body">
+            <div class="module-title">{{ topic.title }}</div>
+            {{ topic.body_markdown|safe }}
             {% for post in posts %}
                 {% include "classroom/participant-post-short.html" with post=post %}
             {% endfor %}

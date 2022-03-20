@@ -99,15 +99,20 @@ def module(request, module, page=0):
     })
 
 @login_required()
-def participant_post(request, post):
+def participant_post(request, post, short=False):
+    templates = {
+        True: "classroom/participant-post-short.html",
+        False: "classroom/participant-post-enlarged.html",
+    }
     post = get_object_or_404(ParticipantPost, pk=post)
     if post.editable and request.user == post.owner:
         editable = True
     else:
         editable = False
-    return render(request, "classroom/participant-post-enlarged.html", {
+    return render(request, templates[short], {
         "post": post,
-        "editable": editable
+        "editable": editable,
+        "replies_enabled": post.topic.participant_post_replies_allowed,
     })
 
 @login_required()
@@ -118,40 +123,60 @@ def participant_post_short(request, post):
     })
 
 @login_required()
-def participant_post_edit(request, topic=None, post=None): #TODO: Confirm that the user actually owns the post
-    if post:
+def participant_post_edit(request, topic=None, post=None, post_type=None): #TODO: Confirm that the user actually owns the post
+    if post_type == 'reply':
+        post_id = post
+        post = ParticipantPost.objects.get(pk=post)
+        template = 'classroom/participant-post-reply-edit.html'
+        form = ParticipantPostForm(initial={
+            'title': f'RE: {post.title}'
+        })
+    print(post_type)
+    if post and not post_type == "reply":
         post = ParticipantPost.objects.get(pk=post)
         if request.user != post.owner:
             raise PermissionDenied()
         form = ParticipantPostForm(instance=post)
         post_id = f'/{post.pk}'
         topic = post.topic.pk
-    else:
+        print('gothere1')
+        template = 'classroom/participant-post-edit.html'
+    elif post_type != 'reply':
         form = ParticipantPostForm()
+        topic = Topic.objects.get(pk=topic)
+        print(topic.force_participant_post_sharing)
+        print('gothere2')
         post_id = ''
-    return render(request, "classroom/participant-post-edit.html", {
+        template = 'classroom/participant-post-edit.html'
+    return render(request, template, {
         'form': form,
         'topic': topic,
         'post_id': post_id,
     })
 
 @login_required()
-def participant_post_submit(request, topic=None, post=None): #TODO: Confirm that the user actually owns the post
+def participant_post_submit(request, topic=None, post=None, post_type=None): #TODO: Confirm that the user actually owns the post
     if request.method == 'POST':
-        topic = Topic.objects.get(pk=topic)
-        if not topic.participant_posts_allowed:
-            return PermissionDenied('Participant Posts are not allowed on this topic.')
-        if post:
-            post = ParticipantPost.objects.get(pk=post)
-            if request.user != post.owner:
-                raise PermissionDenied()
-            form = ParticipantPostForm(request.POST, instance=post)
-        else:
-            post = ParticipantPost(owner=request.user, topic=topic)
+        if post_type == 'reply':
+            print('Reply!')
+            post = ParticipantPost(owner=request.user, post=ParticipantPost.objects.get(pk=post))
             form = ParticipantPostForm(request.POST)
+        else:
+            topic = Topic.objects.get(pk=topic)
+            if not topic.participant_posts_allowed:
+                return PermissionDenied('Participant Posts are not allowed on this topic.')
+            if post and not post_type == 'reply':
+                post = ParticipantPost.objects.get(pk=post)
+                if request.user != post.owner:
+                    raise PermissionDenied()
+                form = ParticipantPostForm(request.POST, instance=post)
+            else:
+                post = ParticipantPost(owner=request.user, topic=topic)
+                form = ParticipantPostForm(request.POST)
         if form.is_valid():
             post.title = form.cleaned_data['title']
             post.body = form.cleaned_data['body']
+            post.shared = form.cleaned_data['shared']
             #post = ParticipantPost(
             #    owner = request.user,
             #    topic = topic,
@@ -159,14 +184,13 @@ def participant_post_submit(request, topic=None, post=None): #TODO: Confirm that
             #    body = form.cleaned_data['body'],
             #)
             post.save()
-            return(HttpResponseRedirect(reverse("module", args=(topic.module.pk, topic.page))))
+            return(HttpResponseRedirect(reverse("module", args=(post.topic.module.pk, post.topic.page))))
 
 @login_required()
 def topic_detail(request, topic):
-    topic = Topic(pk=topic)
-    posts = []
-    posts.append(ParticipantPost.objects.filter(topic=topic, owner=request.user))
-    posts.append(ParticipantPost.objects.filter(topic=topic, shared=True))
+    topic = Topic.objects.get(pk=topic)
+    posts = [post for post in ParticipantPost.objects.filter(topic=topic, owner=request.user, post=None)]
+    posts += [post for post in ParticipantPost.objects.filter(topic=topic, shared=True, post=None)]
     return render(request, "classroom/topic-detail-view.html", context={
         'topic': topic,
         'posts': posts,

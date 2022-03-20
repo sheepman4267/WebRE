@@ -1,8 +1,16 @@
 <div class="participant-post">
-    <form method="post" action="/posts/submit/{{ topic }}{{ post_id }}">{% csrf_token %}
+    <form method="post" action="/posts/submit/{{ topic.pk }}{{ post_id }}">{% csrf_token %}
         <div>Title: {{ form.title.errors }}{{ form.title }}</div>
         <div>{{ form.body }}</div>
         {{ form.body.media }} <!--TODO: Fix MarkdownX Preview-->
+        {% if topic.force_participant_post_sharing %}
+            <span class="participant-post-button">Your post will be shared with other class participants.</span>
+        {% elif topic.participant_posts_can_be_shared %}
+            <span class="participant-post-button">Share your post with other participants?{{ form.shared.errors }}{{ form.shared }}</span>
+        {% else %}
+            <span class="participant-post-button">Your post will only be shown to instructors and administrators.</span>
+        {% endif %}
+        <br>
         <input type="submit"> <!--TODO: Rename this button.-->
     </form>
 </div>

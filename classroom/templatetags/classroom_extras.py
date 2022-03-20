@@ -10,7 +10,7 @@ def topic(topic, request):
     print(request.user)
     print(topic)
     try:
-        post = ParticipantPost.objects.filter(topic=topic, owner=request.user)[0]
+        post = ParticipantPost.objects.filter(topic=topic, owner=request.user, post=None)[0]
         form = None
     except IndexError:
         post = None

@@ -35,6 +35,7 @@ class ParticipantPostAdmin(MarkdownxModelAdmin):
     exclude = [
         'body_markdown',
         'body_markdown_short',
+        "just_created",
     ]
 
 class BingoCardItemAdmin(MarkdownxModelAdmin):

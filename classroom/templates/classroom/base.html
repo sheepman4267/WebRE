@@ -14,7 +14,7 @@
     {% endblock %}
     <body id="body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="main-body">
         {% block navpanel %}
-        {% include "classroom/navpanel.html" %}
+            {% include "classroom/navpanel.html" %}
         {% endblock %}
         <div class="base" id="base">
             {% block main %} {% endblock %}
