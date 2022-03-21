@@ -15,10 +15,14 @@ def topic(topic, request):
     except IndexError:
         post = None
         form = ParticipantPostForm()
+    post_count = ParticipantPost.objects.filter(topic=topic, shared=True, post=None).count()
+    if post:
+        post_count += 1
     return({
         'post': post,
         'topic': topic,
         'form': form,
+        'post_count': post_count,
     })
 
 @register.inclusion_tag('classroom/index-item-new.html')

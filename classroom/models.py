@@ -76,9 +76,6 @@ class Topic(models.Model):
     def user_posts(self, user):
         return self.posts.filter(topic=self.pk, owner=user)
 
-    def post_count(self):
-        return self.posts.filter(post=None).count()
-
     class Meta:
         ordering = ['order']
 
