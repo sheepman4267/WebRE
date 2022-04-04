@@ -17,6 +17,12 @@
         <div class="body">
             <div class="module-title">{{ topic.title }}</div>
             {{ topic.body_markdown|safe }}
+            {% if no_own_post %}
+                <div hx-get="/posts/edit/{{ topic.pk }}" hx-swap="outerHTML" id="new-post" class="participant-post">
+                    <a><h3>Share Your Thoughts...</h3></a>
+                </div>
+                <hr>
+            {% endif %}
             {% for post in posts %}
                 {% include "classroom/participant-post-short.html" with post=post %}
             {% endfor %}
