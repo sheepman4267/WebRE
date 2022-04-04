@@ -194,7 +194,7 @@ def topic_detail(request, topic):
         no_own_post = True
     else:
         no_own_post = False
-    posts += [post for post in ParticipantPost.objects.filter(topic=topic, shared=True, post=None)]
+    posts += [post for post in ParticipantPost.objects.filter(topic=topic, shared=True, post=None).exclude(owner=request.user)]
     return render(request, "classroom/topic-detail-view.html", context={
         'topic': topic,
         'posts': posts,
