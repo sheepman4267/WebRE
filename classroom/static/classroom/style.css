@@ -179,26 +179,15 @@ html * {
     padding-left: 5mm;
 }
 
-.participant-post-button {
-    font-style: italic;
-    font-size: 13pt;
-    color: #6a6a6a;
-    margin-right: 5mm;
-}
-
-.participant-post-button:hover {
-    font-weight: bolder;
-    cursor: default;
-}
-
 .participant-post-footer {
     float: left;
     font-style: italic;
     font-size: 13pt;
     color: #6a6a6a;
+    margin-right: 10px;
 }
 
-.participant-post-footer:hover {
+.participant-post-footer.button:hover {
     font-weight: bolder;
     cursor: default;
 }
