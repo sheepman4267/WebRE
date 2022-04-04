@@ -1,10 +1,11 @@
 <div id="postlarge" class="participant-post">
     <h4>{{ post.title }}</h4>
     {{ post.body_markdown|safe }}
-    <span class="participant-post-button" hx-get="/posts/{{ post.pk }}/short" hx-target="closest #postlarge" hx-swap="outerHTML">Show Less</span>
-    {% if editable %} <span class="participant-post-button" hx-post="/posts/edit/post/{{ post.pk }}" hx-target="closest #postlarge" hx-trigger="click" hx-swap="outerHTML">Edit</span> {% endif %}
-    {% if replies_enabled %} <span class="participant-post-button" hx-get="/posts/reply/{{ post.pk }}/new" hx-swap="outerHTML">Reply</span> {% endif %}
+    <span class="participant-post-footer button" hx-get="/posts/{{ post.pk }}/short" hx-target="closest #postlarge" hx-swap="outerHTML">Show Less</span>
+    {% if editable %} <span class="participant-post-footer button" hx-post="/posts/edit/post/{{ post.pk }}" hx-target="closest #postlarge" hx-trigger="click" hx-swap="outerHTML">Edit</span> {% endif %}
+    {% if replies_enabled %} <span class="participant-post-footer button" hx-get="/posts/reply/{{ post.pk }}/new" hx-swap="outerHTML">Reply</span> {% endif %}
     <span class="participant-post-info">Posted on {{ post.date }} by {{ post.owner }} -- {{ post.replies.count }} replies</span>
+    <br style="clear: all">
     {% for reply in post.replies.all %}
         {% include "classroom/participant-post-short.html" with post=reply  %}
     {% endfor %}
