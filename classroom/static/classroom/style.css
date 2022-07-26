@@ -21,8 +21,7 @@ html * {
     width: 100%;
     max-width: 10.5in;
     min-height: 100vh;
-    padding: 0mm;
-    /*background-color: #aadbd3;*/
+    padding: 0;
 }
 
 .body {
@@ -32,9 +31,9 @@ html * {
     max-width: 8.5in;
     text-align: left;
     background-color: #cfcfcf;
-    padding: 5mm;
+    padding: 20px;
     box-shadow: 0 0 3px #1f1d1d;
-    border-radius: 1mm;
+    border-radius: 20px;
     margin: 2.5mm;
 }
 
@@ -48,7 +47,7 @@ html * {
 }
 
 .nav-panel {
-    display: inline-block;
+    display: block;
     width: 100%;
     height: 60px;
     margin-top: 0;
@@ -59,11 +58,10 @@ html * {
 
 .nav-button {
     height: 48px;
-    min-width: 10em;
+    width: 50%;
+    max-width: 200px;
     font-size: 15pt;
-    margin-top: 6px;
-    margin-left: 4pt;
-    margin-right: 4pt;
+    margin: 6px;
     border: 1px solid #8a8a8a;
     border-radius: 5px;
     text-align: center;
@@ -82,25 +80,9 @@ html * {
     float: left;
 }
 
-.nav-button label {
-    margin-top: 2pt;
-}
-
-.left-item {
-    display: inline-block;
-    float: left;
-    margin-left: 5mm;
-}
-.right-item {
-    display: inline-block;
-    float: right;
-    margin-right: 5mm;
-}
-
-
 .bingo-container {
     display: grid;
-    padding: 0mm;
+    padding: 0;
     grid-gap: 1px;
     grid-column-gap: 1px;
     align-items: center;
@@ -118,10 +100,10 @@ html * {
 
 .index-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(6cm, 1fr));
-    padding: 0mm;
-    grid-gap: 5mm;
-    grid-column-gap: 5mm;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding: 0;
+    grid-gap: 20px;
+    grid-column-gap: 20px;
     align-items: center;
     margin: 0 auto;
 }
@@ -131,11 +113,13 @@ html * {
 }
 
 .index-item {
-    height: 4cm;
-    min-width: 5cm;
-    padding: 5mm;
+    height: 180px;
+    min-width: 260px;
+    padding: 20px;
     background-color: #F1F1F1;
     text-align: center;
+    border: 1px solid #8a8a8a;
+    border-radius: 5px;
 }
 .index-item h3 {
     margin-top: 0.2em;
@@ -143,7 +127,9 @@ html * {
 }
 
 .index-item hr {
-    height: 0.1em;
+    height: 5px;
+    border: 1px solid #8a8a8a;
+    border-radius: 5px;
 }
 
 .index-item:hover {
@@ -166,16 +152,15 @@ html * {
 }
 
 .participant-post {
-    padding: 5mm;
+    padding: 20px;
     background-color: #F1F1F1;
     border-left: 2px solid #8a8a8a;
-    padding-left: calc(5mm + 4px);
     border-radius: 5px;
 }
 
 .participant-post:hover {
     border-left: 6px solid #8a8a8a;
-    padding-left: 5mm;
+    padding-left: 16px;
 }
 
 .participant-post-footer {
@@ -196,7 +181,6 @@ html * {
     font-style: italic;
     font-size: 13pt;
     color: #6a6a6a;
-    margin-bottom: 10mm;
     cursor: default;
 }
 
