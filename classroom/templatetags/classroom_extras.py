@@ -25,7 +25,7 @@ def topic(topic, request):
         'post_count': post_count,
     })
 
-@register.inclusion_tag('classroom/index-item-new.html')
+@register.inclusion_tag('classroom/index-item.html')
 def index_item(item, dest_type):
     if not item.enabled:
         style_class = "index-item disabled"
