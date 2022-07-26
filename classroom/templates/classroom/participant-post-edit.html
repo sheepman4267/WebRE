@@ -6,11 +6,11 @@
         {% if topic.force_participant_post_sharing %}
             <span class="participant-post-footer">Your post will be shared with other class participants.</span>
         {% elif topic.participant_posts_can_be_shared %}
-            <span class="participant-post-footer button">Share your post with other participants?{{ form.shared.errors }}{{ form.shared }}</span>
+            <span class="participant-post-footer">Share your post with other participants?{{ form.shared.errors }}{{ form.shared }}</span>
         {% else %}
             <span class="participant-post-footer">Your post will only be shown to instructors and administrators.</span>
         {% endif %}
         <br>
-        <input type="submit"> <!--TODO: Rename this button.-->
+        <input type="submit" class="webre-button"> <!--TODO: Rename this button.-->
     </form>
 </div>

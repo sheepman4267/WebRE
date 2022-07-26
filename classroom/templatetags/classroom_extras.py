@@ -25,7 +25,7 @@ def topic(topic, request):
         'post_count': post_count,
     })
 
-@register.inclusion_tag('classroom/index-item-new.html')
+@register.inclusion_tag('classroom/index-item.html')
 def index_item(item, dest_type):
     if not item.enabled:
         style_class = "index-item disabled"
@@ -38,6 +38,14 @@ def index_item(item, dest_type):
         'item': item,
         'style_class': style_class,
         'dest_type': dest_type,
+    })
+
+@register.inclusion_tag('classroom/navpanel.html')
+def navpanel(request):
+    return({
+        'request': request,
+        'home_icon': '<i class="fa-solid fa-home"></i>',
+        'logout_icon': '<i class="fa-solid fa-sign-out"></i>',
     })
 
 @register.inclusion_tag('classroom/nav-button.html')

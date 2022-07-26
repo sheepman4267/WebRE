@@ -139,13 +139,13 @@ def participant_post_edit(request, topic=None, post=None, post_type=None): #TODO
         form = ParticipantPostForm(instance=post)
         post_id = f'/{post.pk}'
         topic = post.topic.pk
-        print('gothere1')
+        print('gothere1') #TODO: *sigh*
         template = 'classroom/participant-post-edit.html'
     elif post_type != 'reply':
         form = ParticipantPostForm()
         topic = Topic.objects.get(pk=topic)
         print(topic.force_participant_post_sharing)
-        print('gothere2')
+        print('gothere2') #TODO: *sigh*
         post_id = ''
         template = 'classroom/participant-post-edit.html'
     return render(request, template, {
