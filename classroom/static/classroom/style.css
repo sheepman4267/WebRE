@@ -66,6 +66,7 @@ html * {
     margin-bottom: auto;
     margin-left: 4pt;
     margin-right: 4pt;
+    border-width: 1px;
     border-radius: 2pt;
     padding: 2pt;
     text-align: center;
@@ -199,4 +200,17 @@ html * {
     color: #6a6a6a;
     margin-bottom: 10mm;
     cursor: default;
+}
+
+.webre-button {
+    margin: 10px;
+    margin-left: 11px;
+    font-size: 13pt;
+    height: 30px;
+    border: 2px solid #8a8a8a;
+}
+
+.webre-button:hover {
+    border: 3px solid #797979;
+    margin-left: 10px;
 }

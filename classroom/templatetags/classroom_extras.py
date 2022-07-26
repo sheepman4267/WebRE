@@ -40,6 +40,14 @@ def index_item(item, dest_type):
         'dest_type': dest_type,
     })
 
+@register.inclusion_tag('classroom/navpanel.html')
+def navpanel(request):
+    return({
+        'request': request,
+        'home_icon': '<i class="fa-solid fa-home"></i>',
+        'logout_icon': '<i class="fa-solid fa-sign-out"></i>',
+    })
+
 @register.inclusion_tag('classroom/nav-button.html')
 def nav_button(text, url, side, privileged, request):
     if privileged:
