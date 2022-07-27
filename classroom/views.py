@@ -52,7 +52,7 @@ def module(request, module, page=0):
         module = get_object_or_404(Module, pk=module)
     else:
         module = get_object_or_404(Module, pk=module, enabled=True)
-    pages = module.pages()
+    pages = range(1, module.pages()+1)
     if request.method == 'POST':
         form = ParticipantPostForm(request.POST)
         if form.is_valid():
@@ -66,12 +66,12 @@ def module(request, module, page=0):
     if len(topics) <= 0:
         raise Http404()
     body = markdownify(module.body)
-    if pages == 0:
+    if len(pages) == 0:
         return Http404('That page does not exist')
-    if pages > 1:
+    if len(pages) > 1:
         if page == 1:
             page_buttons = ['next']
-        elif page == pages:
+        elif page == pages[-1]:
             page_buttons = ['prev']
         else:
             page_buttons = ['prev', 'next']
@@ -90,12 +90,15 @@ def module(request, module, page=0):
         "body": body,
         "background_color": module.background_color,
         "topics": topics,
-        "page_buttons": page_buttons,
-        "next_page": page + 1,
-        "prev_page": page - 1,
         "request": request,
         "bingocard": bingocard,
         "bingocard_items": bingocard_items,
+        "pages": pages,
+        "first_page": pages[0],
+        "last_page": pages[-1],
+        "current_page": page,
+        "next_page": page + 1,
+        "prev_page": page - 1,
     })
 
 @login_required()

@@ -37,6 +37,15 @@ html * {
     margin: 2.5mm;
 }
 
+.body.page-button-panel {
+    text-align: center;
+}
+
+.page-buttons {
+    width: calc(80% - 120px);
+    display: inline-block;
+}
+
 .module-title {
     font-size: 18pt;
     width: auto;
@@ -68,8 +77,19 @@ html * {
     background-color: #F1F1F1;
 }
 
+.nav-button.square {
+    width: 48px;
+}
+
 .nav-button:hover {
     box-shadow: 0 0 3px #1f1d1d;
+}
+
+.nav-button:disabled {
+    border: 1px solid #afafaf;
+}
+.nav-button:hover:disabled {
+    box-shadow: none;
 }
 
 .nav-button.right {
@@ -78,6 +98,15 @@ html * {
 
 .nav-button.left {
     float: left;
+}
+
+.nav-button.center {
+    float: none
+}
+
+.nav-button.selected, .nav-button:active {
+    box-shadow: 0 0 3px #1f1d1d inset;
+    background-color: #e1e1e1;
 }
 
 .bingo-container {
