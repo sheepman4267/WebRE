@@ -189,6 +189,7 @@ html * {
     background-color: #F1F1F1;
     border-left: 2px solid #8a8a8a;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .participant-post:hover {
@@ -198,6 +199,7 @@ html * {
 
 .participant-post-footer {
     float: left;
+    display: inline-block;
     font-style: italic;
     font-size: 13pt;
     color: #6a6a6a;
@@ -215,6 +217,7 @@ html * {
     font-size: 13pt;
     color: #6a6a6a;
     cursor: default;
+    display: inline-block;
 }
 
 .webre-button {
