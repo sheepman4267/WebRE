@@ -28,28 +28,19 @@
             {% topic topic=topic request=request %}
         {% endfor %}
 
-        <div hx-boost="true">
-        {% for button in page_buttons %}
-            {% if button == "next" %}
-                <a href="/modules/{{ module.pk }}/{{ next_page }}">Next Page</a>
-            {% endif %}
-            {% if button == "prev" %}
-                <a href="/modules/{{ module.pk }}/{{ prev_page }}">Previous Page</a>
-            {% endif %}
-        {% endfor %}
+        <div class="body page-button-panel" hx-boost="true">
+            {% if not current_page == first_page %} <a href="{% url 'module' module=module.pk page=prev_page %}"><button class="nav-button square left">
+            {% else %} <a><button class="nav-button square left" disabled>
+            {% endif %} <i class="fa-solid fa-arrow-left"></i></button></a>
+            <div class="page-buttons">
+                {% for page in pages %}
+                    <a href="{% url 'module' module=module.pk page=page  %}"><button class="nav-button square center {% if page == current_page %}selected{% endif %}">{{ page }}</button></a>
+                {% endfor %}
+            </div>
+            {% if not current_page == last_page %} <a href="{% url 'module' module=module.pk page=next_page %}"><button class="nav-button square right">
+            {% else %} <a><button class="nav-button square right" disabled>
+            {% endif %} <i class="fa-solid fa-arrow-right"></i></button></a>
         </div>
     </div>
 {% endblock %}
 <br>
-{% block page_buttons %}
-    <div hx-boost="true">
-        {% for button in page_buttons %}
-            {% if button == "next" %}
-                <a href="/modules/{{ module.pk }}/{{ next_page }}">Next</a>
-            {% endif %}
-            {% if button == "prev" %}
-                <a href="/modules/{{ module.pk }}/{{ prev_page }}">Previous</a>
-            {% endif %}
-        {% endfor %}
-    </div>
-{% endblock %}
