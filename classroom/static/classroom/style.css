@@ -63,11 +63,15 @@ html * {
     border-width: 0;
     background-color: #cfcfcf;
     box-shadow: 0 0 3px #000000;
+    white-space: nowrap;
+    overflow: clip;
 }
 
 .nav-button {
+    display: inline-block;
     height: 48px;
-    width: 50%;
+    width: calc(50% / 3);
+    min-width: fit-content;
     max-width: 200px;
     font-size: 15pt;
     margin: 6px;
@@ -185,6 +189,7 @@ html * {
     background-color: #F1F1F1;
     border-left: 2px solid #8a8a8a;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .participant-post:hover {
@@ -194,6 +199,7 @@ html * {
 
 .participant-post-footer {
     float: left;
+    display: inline-block;
     font-style: italic;
     font-size: 13pt;
     color: #6a6a6a;
@@ -211,6 +217,7 @@ html * {
     font-size: 13pt;
     color: #6a6a6a;
     cursor: default;
+    display: inline-block;
 }
 
 .webre-button {
