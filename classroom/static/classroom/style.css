@@ -63,11 +63,15 @@ html * {
     border-width: 0;
     background-color: #cfcfcf;
     box-shadow: 0 0 3px #000000;
+    white-space: nowrap;
+    overflow: clip;
 }
 
 .nav-button {
+    display: inline-block;
     height: 48px;
-    width: 50%;
+    width: calc(50% / 3);
+    min-width: fit-content;
     max-width: 200px;
     font-size: 15pt;
     margin: 6px;
