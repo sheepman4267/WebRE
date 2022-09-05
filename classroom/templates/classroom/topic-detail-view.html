@@ -27,5 +27,12 @@
                 {% include "classroom/participant-post-short.html" with post=post %}
             {% endfor %}
         </div>
+        <div class="body page-button-panel">
+            <a href="{% url "module" topic.module.pk topic.page %}">
+                <button class="nav-button">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </a>
+        </div>
     </div>
 {% endblock %}
