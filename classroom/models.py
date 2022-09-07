@@ -221,20 +221,27 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = MarkdownxField(blank=True)
     enrollment = models.ManyToManyField(Program, related_name='participants', blank=True, null=True)
+    pronouns = models.CharField(max_length=50, blank=True, null=True)
+    display_pronouns_option = models.BooleanField(default=False)
     display_name_option = models.CharField(max_length=20, choices=DISPLAY_NAME_CHOICES, default='first_last')
 
     def display_name(self):
+        name_out = ''
         match self.display_name_option:
             case 'first':
-                return self.user.first_name
+                name_out = self.user.first_name
             case 'first_last':
-                return f'{self.user.first_name} {self.user.last_name}'
+                name_out = f'{self.user.first_name} {self.user.last_name}'
             case 'first_lastinitial':
-                return f'{self.user.first_name} {self.user.last_name[0]}.'
+                name_out = f'{self.user.first_name} {self.user.last_name[0]}.'
             case 'firstinitial_last':
-                return f'{self.user.first_name[0]}. {self.user.last_name}'
+                name_out = f'{self.user.first_name[0]}. {self.user.last_name}'
             case 'email':
-                return f'{self.user.email}'
+                name_out = f'{self.user.email}'
+        if self.display_pronouns_option:
+            name_out = f'{name_out} ({self.pronouns})'
+        return name_out
+
 
     def __str__(self):
         return f'{self.user.username}({self.display_name()}'
