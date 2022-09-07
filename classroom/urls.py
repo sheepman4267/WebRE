@@ -17,5 +17,6 @@ urlpatterns = [
     path('posts/edit/post/<int:post>', views.participant_post_edit),
     path('topic/<int:topic>', views.topic_detail),
     path('signup', views.create_user, name='create_user'),
-    path('after_signup', views.after_signup, name='after_signup')
+    path('after_signup', views.after_signup, name='after_signup'),
+    path('update_profile', views.update_profile, name='update_profile'),
 ]

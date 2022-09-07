@@ -1,0 +1,20 @@
+{% extends "classroom/base.html" %}
+
+{% block main %}
+<div class="body">
+    <h1>Account Settings</h1>
+    <h2>Change your user information</h2>
+    <form method="post" action="{% url "update_profile" %}">
+        {% csrf_token %}
+        <p>Email Address (also used to log in!): {{ user_form.email }}</p>
+        <p>First Name: {{ user_form.first_name }}</p>
+        <p>Last Name: {{ user_form.last_name }}</p>
+        <p>Display Name Preference: {{ profile_form.display_name_option }}</p>
+        <p>Pronouns: {{ profile_form.pronouns }}</p>
+        <p>Display Pronouns with name? {{ profile_form.display_pronouns_option }}</p>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Change your Password</h2>
+    <a href="{% url 'password_change' %}">Change your Password</a>
+</div>
+{% endblock %}

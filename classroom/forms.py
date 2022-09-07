@@ -51,3 +51,29 @@ class WebREProfileForm(forms.ModelForm):
         fields = {
             'enrollment'
         }
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.CharField(required=True)
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.instance.username
+
+        if email and User.objects.filter(email=email).exclude(username=username).count():
+            raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
+        return email
+
+    def save(self):
+        self.instance.username = self.cleaned_data.get('email')
+        super(UserUpdateForm, self).save()
+
+class ProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ('display_name_option', 'pronouns', 'display_pronouns_option')

@@ -46,10 +46,11 @@ def navpanel(request):
         'request': request,
         'home_icon': '<i class="fa-solid fa-home"></i>',
         'logout_icon': '<i class="fa-solid fa-sign-out"></i>',
+        'settings_icon': '<i class="fa-solid fa-gear"></i>',
     })
 
 @register.inclusion_tag('classroom/nav-button.html')
-def nav_button(text, url, side, privileged, request):
+def nav_button(text, url, side, privileged, title, request):
     if privileged:
         if not request.user.is_staff:
             return({
@@ -60,4 +61,5 @@ def nav_button(text, url, side, privileged, request):
         'url': url,
         'text': text,
         'side': side,
+        'title': title,
     })

@@ -13,7 +13,7 @@ from templated_email import send_templated_mail
 from markdownx.utils import markdownify
 
 from .models import Module, ParticipantPost, Topic, BingoCard, Program
-from .forms import ParticipantPostForm, WebREUserCreationForm, WebREProfileForm
+from .forms import ParticipantPostForm, WebREUserCreationForm, WebREProfileForm, UserUpdateForm, ProfileUpdateForm
 
 @login_required
 def index(request):
@@ -242,6 +242,24 @@ def create_user(request):
         user_form = WebREUserCreationForm()
         profile_form = WebREProfileForm()
         return render(request, 'registration/create-user.html', context={
+            'user_form': user_form,
+            'profile_form': profile_form,
+        })
+
+@login_required()
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+        profile_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        if profile_form.is_valid():
+            profile_form.save()
+        return HttpResponseRedirect(reverse('update_profile'))
+    else: #if request.method != 'POST'...
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+        return render(request, 'classroom/update-profile.html', context={
             'user_form': user_form,
             'profile_form': profile_form,
         })
