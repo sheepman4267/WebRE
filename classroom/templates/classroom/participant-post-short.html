@@ -4,6 +4,6 @@
     <span class="participant-post-footer button" hx-get="/posts/{{ post.pk }}" hx-target="closest #participant-post" hx-swap="outerHTML">Show More</span>
     {% if editable %} <span class="participant-post-footer button" hx-post="/posts/edit/post/{{ post.pk }}" hx-trigger="click" hx-target="closest #participant-post" hx-swap="outerHTML">Edit</span> {% endif %}
     {% if replies_enabled %} <span class="participant-post-footer button" hx-get="/posts/reply/{{ post.pk }}/new" hx-swap="outerHTML">Reply</span> {% endif %}
-    <span class="participant-post-info">Posted on {{ post.date }} by {{ post.owner }} -- {{ post.replies.count }} replies</span>
+    <span class="participant-post-info">Posted on {{ post.date }} by {{ post.owner.profile.display_name }} -- {{ post.replies.count }} replies</span>
     <br style="clear: all">
 </div>

@@ -209,13 +209,35 @@ class ParticipantPost(models.Model):
 
         super(ParticipantPost, self).save(*args, **kwargs)
 
+DISPLAY_NAME_CHOICES = (
+    ('first', 'First Name'),
+    ('first_last', 'First and Last Name'),
+    ('first_lastinitial', 'First Name and Last Initial'),
+    ('firstinitial_last', 'First Initial and Last Name'),
+    ('email', 'Email Address'),
+)
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = MarkdownxField(blank=True)
     enrollment = models.ManyToManyField(Program, related_name='participants', blank=True, null=True)
+    display_name_option = models.CharField(max_length=20, choices=DISPLAY_NAME_CHOICES, default='first_last')
+
+    def display_name(self):
+        match self.display_name_option:
+            case 'first':
+                return self.user.first_name
+            case 'first_last':
+                return f'{self.user.first_name} {self.user.last_name}'
+            case 'first_lastinitial':
+                return f'{self.user.first_name} {self.user.last_name[0]}.'
+            case 'firstinitial_last':
+                return f'{self.user.first_name[0]}. {self.user.last_name}'
+            case 'email':
+                return f'{self.user.email}'
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username}({self.display_name()}'
 
 @receiver(pre_save, sender=User)
 def on_activation(sender, instance, **kwargs):

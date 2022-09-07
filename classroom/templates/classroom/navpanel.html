@@ -3,8 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <span class="nav-panel">
-    {% nav_button text=home_icon url="/" side="left" privileged=False request=request %}
-    {% nav_button text=logout_icon url="/accounts/logout/" side="right" privileged=False request=request %}
-    {% nav_button text="Administration" url="/admin" side="right" privileged=True request=request %}
+    {% nav_button title='Home' text=home_icon url="/" side="left" privileged=False request=request %}
+    {% nav_button title='Log Out' text=logout_icon url="/accounts/logout/" side="right" privileged=False request=request %}
+    {% nav_button title='User Settings' text=settings_icon url="/update_profile" side="right" privileged=False request=request %}
+    {% nav_button title='Administration Panel' text="Administration" url="/admin" side="right" privileged=True request=request %}
 </span><br>
 </html>
