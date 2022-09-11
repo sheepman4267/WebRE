@@ -6,7 +6,7 @@
     <h2>Change your user information</h2>
     <form method="post" action="{% url "update_profile" %}">
         {% csrf_token %}
-        <p>Email Address (also used to log in!): {{ user_form.email }}</p>
+        <p>Email Address: {{ user_form.email }}</p>
         <p>First Name: {{ user_form.first_name }}</p>
         <p>Last Name: {{ user_form.last_name }}</p>
         <p>Display Name Preference: {{ profile_form.display_name_option }}</p>
