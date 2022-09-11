@@ -21,8 +21,8 @@ def index(request):
         index_items = Program.objects.all()
     else:
         index_items = Program.objects.filter(participants=request.user.profile, enabled=True, visible=True)
-    if len(index_items) == 1:
-        return HttpResponseRedirect(f"/program/{index_items[0].pk}")
+    #if len(index_items) == 1:
+    #    return HttpResponseRedirect(f"/program/{index_items[0].pk}")
     return render(request, 'classroom/index.html', {
         "index_items": index_items,
         "background_color": "#AFAFAF",
@@ -35,8 +35,8 @@ def program(request, program):
         index_items = Module.objects.filter(program=program)
     else:
         index_items = Module.objects.filter(program=program, enabled=True, visible=True)
-    if len(index_items) == 1:
-        return HttpResponseRedirect(f'/modules/{index_items[0].pk}/1')
+    #if len(index_items) == 1:
+    #    return HttpResponseRedirect(f'/modules/{index_items[0].pk}/1')
     program = get_object_or_404(Program, pk=program)
     return render(request, 'classroom/index.html', {
         "index_items": index_items,
