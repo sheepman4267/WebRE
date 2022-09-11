@@ -68,10 +68,6 @@ class UserUpdateForm(forms.ModelForm):
             raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
         return email
 
-    def save(self):
-        self.instance.username = self.cleaned_data.get('email')
-        super(UserUpdateForm, self).save()
-
 class ProfileUpdateForm(forms.ModelForm):
 
     class Meta:

@@ -263,3 +263,15 @@ def update_profile(request):
             'user_form': user_form,
             'profile_form': profile_form,
         })
+
+def confirm_email(request, email_code):
+    try:
+        user = User.objects.get(profile__email_confirmation_code=email_code)
+    except User.DoesNotExist:
+        return render(request, 'classroom/confirm-email-fail.html')
+    user.profile.email_confirmation_code = ''
+    user.profile.email_confirmed = True
+    return render(request, 'classroom/confirm-email-success.html', context={
+        'user': user
+    })
+

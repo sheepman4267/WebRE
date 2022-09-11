@@ -4,6 +4,7 @@ from django.utils.html import strip_tags
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.shortcuts import reverse
 
 from templated_email import send_templated_mail
 
@@ -13,6 +14,8 @@ from markdownx.utils import markdownify
 from colorfield.fields import ColorField
 
 import datetime
+import os
+import base64
 
 class Program(models.Model):
     title = models.CharField(max_length=200)
@@ -183,8 +186,7 @@ class ParticipantPost(models.Model):
             return f'{self.owner} on {self.topic.title}: {self.title}'
         else:
             return f'{self.owner} replying to {self.post.title}'
-
-
+        
     def save(self, *args, **kwargs):
         self.body_markdown = markdownify(strip_tags(self.body))
         self.body_markdown_short = markdownify(strip_tags(self.body[0:200]))
@@ -224,6 +226,8 @@ class Profile(models.Model):
     pronouns = models.CharField(max_length=50, blank=True, null=True)
     display_pronouns_option = models.BooleanField(default=False)
     display_name_option = models.CharField(max_length=20, choices=DISPLAY_NAME_CHOICES, default='first_last')
+    email_confirmation_code = models.CharField(max_length=128, default='')
+    email_confirmed = models.BooleanField(default=False)
 
     def display_name(self):
         name_out = ''
@@ -245,6 +249,26 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username}({self.display_name()}'
+
+@receiver(pre_save, sender=Profile)
+def set_email_confirmed(sender, instance, **kwargs):
+    previous = sender.objects.get(id=instance.id)
+    if previous.email != instance.email:
+        instance.email_confirmed = False
+        instance.email_confirmation_code = base64.urlsafe_b64encode(os.urandom(32))
+        instance.save()
+
+@receiver(post_save, sender=Profile)
+def send_confirmation_email(sender, instance, **kwargs):
+    if not instance.email_confirmed:
+        send_templated_mail(template_name='enduser-email-confirmation.email',
+                            from_email=settings.WEBRE_EMAIL_ACCOUNTS_FROM_ADDRESS,
+                            recipient_list=[instance.user.email],
+                            context={
+                                'user': instance.user,
+                                'url': ,
+                            }
+                            )
 
 @receiver(pre_save, sender=User)
 def on_activation(sender, instance, **kwargs):
